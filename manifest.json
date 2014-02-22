@@ -6,12 +6,7 @@
   "icons": {
     "128": "icon128.png"
   },
-  "content_scripts": [
-    {
-      "matches": ["http://*/*", "https://*/*"],
-      "js": ["jquery-1.7.min.js", "contentscript.js"]
-    }
-  ],
+  "content_scripts": [],
   "background": {
     "persistent": false,
     "scripts": ["gracenote_get_id.js", "gracenote_get_playlist.js"]
