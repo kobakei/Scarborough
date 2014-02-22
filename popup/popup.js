@@ -3,7 +3,7 @@
 		eventAdd();
 		setcardimg();
 	});
-	
+
 	function eventAdd() {
 		$(document).on('click', '.card', function(e) {
 			makelist();
@@ -13,8 +13,11 @@
 			back();
 		});
 
+		$(document).on('click', '#test', function(e) {
+			kickapi();
+		});
 	}
-	
+
 	function setcardimg() {
 		
 		var imgList = [
@@ -32,8 +35,8 @@
 			//$(this).css('background-image','url(' + img +')');
 		});	
 	}
-	
-	
+
+
 	function makelist() {
 
 		$('#list').slideUp();
