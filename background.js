@@ -153,7 +153,7 @@ chrome.runtime.onMessage.addListener(
     console.log("onMessage");
     //console.log(sendResponse);
     if (request.type) {
-      var obj = getGenreAndMoodFromType("1");
+      var obj = getGenreAndMoodFromType(request.type);
       if (obj) {
         getTrackListByRythm(obj.genre, obj.mood, null, function(data){
           console.log(data);
@@ -185,7 +185,7 @@ chrome.tabs.onUpdated.addListener(
     if (changeInfo.status == "loading") {
       return;
     }
-    
+
     // ページタイトル取得
     localStorage["tab_title"] = tab.title;
   }
