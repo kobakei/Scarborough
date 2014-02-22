@@ -162,11 +162,13 @@ chrome.runtime.onMessage.addListener(
       getTrackListByRythm(obj.genre, obj.mood, null, function(data){
         console.log(data);
         console.log("sendResponse");
-        sendResponse([
-          "4bi73jCM02fMpkI11Lqmfe",
-          "4bi73jCM02fMpkI11Lqmfe",
-          "4bi73jCM02fMpkI11Lqmfe"
-        ]);
+        sendResponse({
+          ids: [
+            "4bi73jCM02fMpkI11Lqmfe",
+            "4bi73jCM02fMpkI11Lqmfe",
+            "4bi73jCM02fMpkI11Lqmfe"
+          ]
+        });
       });
     } else {
       console.log("sendResponse");
