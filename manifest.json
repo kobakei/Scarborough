@@ -14,7 +14,7 @@
   ],
   "background": {
     "persistent": false,
-    "scripts": ["gracenote_get_id.js"]
+    "scripts": ["gracenote_get_id.js", "gracenote_get_playlist.js"]
   },
   "browser_action": {
     "default_icon": "icon128.png",
