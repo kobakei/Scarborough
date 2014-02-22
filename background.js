@@ -120,11 +120,8 @@ function getTrackListByWeb(artist, album) {
 }
 
 // ユーザーが選択したタイプから、ジャンルとムードに変換する
-function getGenreAndMoodFromType(type) {
-  return {
-    genre: 36060,
-    mood: null
-  };
+function getGenreAndMoodFromType(cardId) {
+  return CARD_LIST[cardId];
 }
 
 // トラック名などから、Spotify上のトラックIDを取得します
