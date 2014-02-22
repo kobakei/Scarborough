@@ -11,7 +11,7 @@ var CALLBACK = 3;
 function getTrackID(a_track_name, a_album, a_artist, a_callback){
 	var l_track_info;
 	l_track_info = [a_track_name, a_album, a_artist, a_callback];
-	
+
 	prv_getTrackID(l_track_info);
 }
 
@@ -45,7 +45,7 @@ function prv_getTrackID(a_track_info){
 				l_album = resp.tracks[i].album.name;
 				console.log(a_track_info);
 				if(l_artist == a_track_info[ARTIST] && l_album == a_track_info[ALBUM]){
-					l_track_id = resp.tracks[i].href;
+					l_track_id = resp.tracks[i].href.replace("spotify:track:", "");
 //					l_track_id = resp.tracks[i]['external-ids'][0].id;
 					console.log(l_track_id);
 					break;
