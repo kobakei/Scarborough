@@ -16,7 +16,7 @@ body:before {
 	font-weight :bold;
 	margin: 10px;
 	padding: 10px;
-	height: 80px;
+	/*height: 80px;*/
 	width: 280px;
 	border: 1px solid #aaa;
 	background-color: #fff;
