@@ -157,11 +157,11 @@ console.log("*** Adding event handler ***");
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     console.log("onMessage");
+    //console.log(sendResponse);
     if (request.type) {
       var obj = getGenreAndMoodFromType(request.type);
       getTrackListByRythm(obj.genre, obj.mood, null, function(data){
         console.log(data);
-        console.log("sendResponse");
         sendResponse({
           ids: [
             "4bi73jCM02fMpkI11Lqmfe",
@@ -169,10 +169,13 @@ chrome.runtime.onMessage.addListener(
             "4bi73jCM02fMpkI11Lqmfe"
           ]
         });
+        //console.log(chrome.runtime.lastError.message);
+        console.log("sendResponse success");
       });
     } else {
-      console.log("sendResponse");
-      sendResponse("error: type is null");
+      sendResponse({});
+      console.log("sendResponse failure");
     }
+    return true;
   }
 );
