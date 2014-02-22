@@ -1,65 +1,51 @@
 (function($) {
 	$(document).ready(function() {
-		autoPlay();
+		eventAdd();
+		setcardimg();
 	});
-
-	function autoPlay() {
-		$('#spotify').load(function() {
-			setTimeout(function(){
-				play();
-			}, 1000);
-
-			function play() {
-				var e = document.createEvent('MouseEvents');
-				e.initMouseEvent('click', // type
-				true, // bubbles
-				true, // cancelable
-				window, // view
-				0, // detail（クリック数）
-				50, // screenX（デバイス全体における座標）
-				50, // screenY
-				0, // clientX（ブラウザ表示域における座標）
-				0, // clientY
-				false, // ctrlKey
-				false, // altKey
-				false, // shiftKey
-				false, // metaKey
-				0, // button（0 が左、1 が中、2 が右クリック）
-				null // relatedTarget
-				);
-				var n = document.getElementById("spotify");
-				// クリックのターゲットにしたいノード
-				n.dispatchEvent(e);
-			}
-
+	
+	function eventAdd() {
+		$(document).on('click', '.card', function(e) {
+			makelist();
 		});
+
+		$(document).on('click', '#back', function(e) {
+			back();
+		});
+
+	}
+	
+	function setcardimg() {
+		$('.card').each(function() {
+			$(this).css('background-image','url(http://31.media.tumblr.com/78ce1831f575f06a6ca966ee2c9198f1/tumblr_n10nb0TY4u1st5lhmo1_1280.jpg)');
+		});	
+	}
+	
+	
+	function makelist() {
+
+		$('#list').slideUp();
+		$('#playlist').show();
+
+		//このURLをAPIでかえす
+		var url = 'https://embed.spotify.com/?uri=spotify:user:erebore:playlist:788MOXyTfcUb1tdw4oC7KJ';
+		$('<iframe />').attr('src', url).attr('frameborder', '0').attr('allowtransparency', 'true').attr('width', '300').attr('height', '380').appendTo('#playlist');
 	};
 
-})(jQuery);
-
-
-
-
-
-
-
-
-
-
-
-
-function click(e){
-	// 第一引数に選択されたモード、第二引数がコールバック
-	chrome.runtime.sendMessage({type: "hoge"}, function(response) {
-		// responseはSpotifyIDのリスト
-		// ['AAAAA', 'BBBBBB', 'CCCCCC'] みたいな形式
-		alert(response);
-	});
-}
-
-document.addEventListener('DOMContentLoaded', function(){
-	var buttons = document.querySelectorAll('button');
-	for (var i=0; i<buttons.length; i++) {
-		buttons[i].addEventListener('click', click);
+	function back() {
+		$('#playlist').hide().find('iframe').remove();
+		$('#list').show();
 	}
-});
+
+	function kickapi() {
+		// 第一引数に選択されたモード、第二引数がコールバック
+		chrome.runtime.sendMessage({
+			type : "hoge"
+		}, function(response) {
+			// responseはSpotifyIDのリスト
+			// ['AAAAA', 'BBBBBB', 'CCCCCC'] みたいな形式
+			alert(response);
+		});
+	}
+
+})(jQuery);
