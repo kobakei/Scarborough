@@ -205,16 +205,21 @@ chrome.runtime.onMessage.addListener(
   }
 );
 
-chrome.tabs.onUpdated.addListener(
-  function(tab_id, changeInfo, tab) {
-    if (changeInfo.status == "loading") {
-      return;
-    }
-
-    // ページタイトル取得
+chrome.tabs.onUpdated.addListener(function(tab_id, actInfo, tab) {
+  // 取得不要時
+  if (actInfo.status == "loading") {
+    return;
+  }
+  if (tab) {
     localStorage["tab_title"] = tab.title;
   }
-);
+});
+
+chrome.tabs.onActivated.addListener(function(actInfo) {
+  chrome.tabs.get(actInfo.tabId, function(tab) {
+    localStorage["tab_title"] = tab.title;
+  });
+});
 
 // test
 showNotification('Scarborough', '息抜き中ならこんな音楽はいかが？');
