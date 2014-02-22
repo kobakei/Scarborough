@@ -36,3 +36,30 @@
 	};
 
 })(jQuery);
+
+
+
+
+
+
+
+
+
+
+
+
+function click(e){
+	// 第一引数に選択されたモード、第二引数がコールバック
+	chrome.runtime.sendMessage({type: "hoge"}, function(response) {
+		// responseはSpotifyIDのリスト
+		// ['AAAAA', 'BBBBBB', 'CCCCCC'] みたいな形式
+		alert(response);
+	});
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+	var buttons = document.querySelectorAll('button');
+	for (var i=0; i<buttons.length; i++) {
+		buttons[i].addEventListener('click', click);
+	}
+});
