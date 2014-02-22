@@ -14,7 +14,7 @@
   ],
   "background": {
     "persistent": false,
-    "scripts": ["bg.js"]
+    "scripts": ["jquery-1.7.min.js", "bg.js"]
   },
   "browser_action": {
     "default_icon": "icon128.png",
@@ -22,7 +22,8 @@
     "default_popup": "popup.html"
   },
   "permissions": [
-    "tabs"
+    "tabs",
+    "https://*.web.cddbp.net/"
   ],
   "options_page": "options.html"
 }
