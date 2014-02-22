@@ -124,18 +124,15 @@ function getGenreAndMoodFromType(cardId) {
   return CARD_LIST[cardId];
 }
 
-// トラック名などから、Spotify上のトラックIDを取得します
-function getSpotifyTrackId(album, artist, track, callback) {
-  // TODO
-}
-
-//
+// 必要な数だけSpotify Track IDの配列を取得します
 function getSpotifyTrackIdList(data, callback) {
   var count = RETURN_COUNT;
   var trackIdList = [];
   for (var i=0; i<data.length; i++) {
-    getSpotifyTrackId(data[i].album, data[i].artist, data[i].track, function(trackId){
-      trackIdList.push(trackId);
+    getTrackID(data[i].track, data[i].album, data[i].artist, function(trackId){
+      if (trackId) {
+        trackIdList.push(trackId);
+      }
       count--;
       if (count <= 0) {
         callback(trackIdList);
@@ -156,23 +153,21 @@ chrome.runtime.onMessage.addListener(
     console.log("onMessage");
     //console.log(sendResponse);
     if (request.type) {
-      var obj = getGenreAndMoodFromType(request.type);
+      var obj = getGenreAndMoodFromType("1");
       if (obj) {
         getTrackListByRythm(obj.genre, obj.mood, null, function(data){
           console.log(data);
-
-          // TODO Spotify IDに変換
-
-          sendResponse({
-            ids: [
-              "4bi73jCM02fMpkI11Lqmfe",
-              "4bi73jCM02fMpkI11Lqmfe",
-              "4bi73jCM02fMpkI11Lqmfe"
-            ]
+          // Spotify IDに変換
+          getSpotifyTrackIdList(data, function(trackIds){
+            sendResponse({
+              ids: trackIds
+            });
+            //console.log(chrome.runtime.lastError.message);
+            console.log("sendResponse success");
           });
-          //console.log(chrome.runtime.lastError.message);
-          console.log("sendResponse success");
+          return true;
         });
+        return true;
       } else {
         sendResponse({});
         console.log("sendResponse failure2");
