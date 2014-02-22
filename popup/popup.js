@@ -12,10 +12,6 @@
 		$(document).on('click', '#back', function(e) {
 			back();
 		});
-
-		$(document).on('click', '#test', function(e) {
-			kickapi();
-		});
 	}
 
 	function setcardimg() {
@@ -41,7 +37,8 @@
 
 		$('#list').slideUp();
 		$('#playlist').show();
-
+		
+		kickapi();
 		//このURLをAPIでかえす
 		var url = 'https://embed.spotify.com/?uri=spotify:user:erebore:playlist:788MOXyTfcUb1tdw4oC7KJ';
 		$('<iframe />').attr('src', url).attr('frameborder', '0').attr('allowtransparency', 'true').attr('width', '300').attr('height', '380').appendTo('#playlist');
@@ -59,7 +56,7 @@
 		}, function(response) {
 			// responseはSpotifyIDのリスト
 			// ['AAAAA', 'BBBBBB', 'CCCCCC'] みたいな形式
-			alert(response);
+			$('#playlist').append(response);
 		});
 	}
 

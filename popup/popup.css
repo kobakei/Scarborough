@@ -23,12 +23,10 @@ body:before {
 	background-repeat: no-repeat;
 	background-attachment: fixed;
 	background-position : center;
-	-webkit-filter: blur(0);
 }
 
 .card:hover {
 	cursor:pointer;
-	
 }
 
 #playlist {
