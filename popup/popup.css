@@ -24,6 +24,8 @@ body:before {
 	/*background-repeat: no-repeat;*/
 	background-attachment: fixed;
 	background-position : center center;
+
+  text-shadow: 3px 3px 1px #999999;
 }
 
 .card:hover {

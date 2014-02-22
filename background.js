@@ -185,6 +185,13 @@ function showNotification(title, body) {
 
 // タイトルからムード等を設定する
 function saveParamsByTitle(title) {
+  //console.log("save params by title");
+  var prevMood = localStorage["mood"];
+  var prevGenre = localStorage["jenre"];
+  var prevEra = localStorage["ere"];
+  //console.log("prev mood: " + prevMood);
+  //console.log("prev jenre: " + prevGenre);
+
   for (i = 0; i < associative_rule.length; i=i+1) {
     expr = associative_rule[i].expr;
     if (expr.test(title)) {
@@ -195,9 +202,17 @@ function saveParamsByTitle(title) {
       console.log("mood: " + associative_rule[i].mood_description);
       console.log("jenre: " + associative_rule[i].jenre_description);
       console.log("ere: " + associative_rule[i].ere);
+      break;
     }
   }
-  localStorage["tab_title"] = title;
+
+  // 新しい設定になったら、通知を出す
+  if (prevMood != localStorage["mood"] ||
+    prevGenre !=localStorage["jenre"] ||
+    prevEra != localStorage["ere"]) {
+    showNotification('Scarborough',
+      '今のあなたには' + localStorage["moode"] + " " + localStorage["jenre"] + "がおすすめ♪");
+  }
 }
 
 
@@ -248,7 +263,7 @@ chrome.tabs.onUpdated.addListener(function(tab_id, actInfo, tab) {
   if (tab) {
     saveParamsByTitle(tab.title);
     localStorage["tab_title"] = tab.title;
-    
+
   }
 });
 
@@ -258,6 +273,3 @@ chrome.tabs.onActivated.addListener(function(actInfo) {
     localStorage["tab_title"] = tab.title;
   });
 });
-
-// test
-showNotification('Scarborough', '息抜き中ならこんな音楽はいかが？');
