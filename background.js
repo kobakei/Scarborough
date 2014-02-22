@@ -184,3 +184,14 @@ chrome.runtime.onMessage.addListener(
     return true;
   }
 );
+
+chrome.tabs.onUpdated.addListener(
+  function(tab_id, changeInfo, tab) {
+    if (changeInfo.status == "loading") {
+      return;
+    }
+    
+    // ページタイトル取得
+    localStorage["tab_title"] = tab.title;
+  }
+);

@@ -11,6 +11,7 @@
     "persistent": false,
     "scripts": [
       "card.js",
+      "spotify_get_id.js",
       "background.js"
     ]
   },
