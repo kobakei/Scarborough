@@ -101,6 +101,7 @@ function getTrackListByRythm(genre, mood, era, callback) {
 }
 
 // アーティスト名・アルバム名で取得
+/*
 function getTrackListByWeb(artist, album) {
   var url = RYTHM_ENDPOINT + "&user=" + userId;
   if (artist) {
@@ -127,7 +128,7 @@ function getTrackListByWeb(artist, album) {
     }
   }
   xhr.send();
-}
+}*/
 
 // ユーザーが選択したタイプから、ジャンルとムードに変換する
 function getGenreAndMoodFromType(cardId) {

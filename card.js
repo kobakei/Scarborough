@@ -1,12 +1,10 @@
-/*
- // ムード
- {
- "RESPONSE":
+// ムード
+MOOD_LIST =
  [
  {
- "STATUS" : "OK",
- "MOOD":
- [
+ "ID" : "",
+ "VALUE" : "(All)"
+ },
  {
  "ID" : "65322",
  "VALUE" : "Peaceful"
@@ -107,24 +105,18 @@
  "ID" : "65333",
  "VALUE" : "Upbeat"
  }
- ]
- }
- ]
- }*/
+ ];
 
-/*
- // ジャンル
+// ジャンル
+GENRE_LIST = [
  {
- "RESPONSE":
- [
- {
- "STATUS" : "OK",
- "GENRE":
- [
- {
- "ID" : "25982",
- "VALUE" : "Latin"
+ "ID" : "",
+ "VALUE" : "(All)"
  },
+{
+	"ID" : "25982",
+	"VALUE" : "Latin"
+},
  {
  "ID" : "36060",
  "VALUE" : "Blues"
@@ -221,10 +213,7 @@
  "ID" : "36052",
  "VALUE" : "Indie"
  }
- ]
- }
- ]
- }*/
+];
 
 CARD_LIST = {
 	1 : {
