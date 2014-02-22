@@ -232,35 +232,35 @@ CARD_LIST = {
 		message : "上司に激おこプンプン丸！",
 		genre : "36053",
 		mood : "42955",
-		img : "http://25.media.tumblr.com/8fb80a2a6111ffbf05defc3a758a2f8a/tumblr_n10n4rpjvZ1st5lhmo1_1280.jpg"
+		img : "http://farm7.static.flickr.com/6015/6196903016_ec3bc5e286_b.jpg"
 	},
 	2 : {
 		id : "2",
 		message : "オシャレカフェでドヤリングしてるオレｶｺ(・∀・)ｲｲ!!",
 		genre : "36054",
 		mood : "65333",
-		img : "http://25.media.tumblr.com/c9b579dd55faf4111ae5e2603bc9fa8d/tumblr_mzzqwktTbR1st5lhmo1_1280.jpg"
+		img : "http://31.media.tumblr.com/3afad829ce330a66b3bbb98831c1c393/tumblr_mx3tpto69r1st5lhmo1_1280.jpg"
 	},
 	3 : {
 		id : "3",
-		message : "おやすみなさい",
+		message : "Good Night...",
 		genre : "25974",
 		mood : "42948",
 		img : "http://25.media.tumblr.com/8fb80a2a6111ffbf05defc3a758a2f8a/tumblr_n10n4rpjvZ1st5lhmo1_1280.jpg"
 	},
 	4 : {
 		id : "4",
-		message : "ノリノリで仕事してるオレ！",
+		message : "Harder better faster stronger",
 		genre : "36054",
 		mood : "65326",
-		img : "http://25.media.tumblr.com/8fb80a2a6111ffbf05defc3a758a2f8a/tumblr_n10n4rpjvZ1st5lhmo1_1280.jpg"
+		img : "http://www.sukacuka.com/wp-content/uploads/2012/07/Cabaran-SEO-Eriqazz-vs-Denaihati-600x288.png"
 	},
 	5 : {
 		id : "5",
 		message : "ID5",
 		genre : "36056",
 		mood : "65326",
-		img : "http://25.media.tumblr.com/8fb80a2a6111ffbf05defc3a758a2f8a/tumblr_n10n4rpjvZ1st5lhmo1_1280.jpg"
+		img : "http://25.media.tumblr.com/7b53f50fd7f50ca8bdd69a68352a036d/tumblr_mqq48zRR9x1st5lhmo1_1280.jpg"
 	},
 	6 : {
 		id : "6",
@@ -269,6 +269,5 @@ CARD_LIST = {
 		genre : "65322",
 		mood : "36059",
 		img : "http://24.media.tumblr.com/56fea5f4c81a60e418a83e114ac07414/tumblr_myp99avE2U1st5lhmo1_1280.jpg"
-	},
-
+	}
 };

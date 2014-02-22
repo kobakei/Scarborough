@@ -21,9 +21,9 @@ body:before {
 	width: 100%;
 	border-bottom: 1px solid #aaa;
 	background-color: #fff;
-	background-repeat: no-repeat;
+	/*background-repeat: no-repeat;*/
 	background-attachment: fixed;
-	background-position : center;
+	background-position : center center;
 }
 
 .card:hover {

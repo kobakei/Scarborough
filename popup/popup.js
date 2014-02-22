@@ -25,7 +25,7 @@
 	}
 
 	function getcardlist() {
-		var title = ['5', '6', '1', '2', '3', '4'];
+		var title = ['5', '6', '1', '2', '3', '4', '7'];
 		for (var i = 0; i <= title.length; i++) {
 			if (title[i] == 5) {
 				$('#list').append('<li data-id="' + 5 + '" class="card">' + localStorage["tab_title"] + 'をみているあなたへのおすすめ</li>');
