@@ -5,27 +5,26 @@ var ALBUM = 1;
 var ARTIST = 2;
 var CALLBACK = 3;
 
-var m_track_info;
-
 //===============================
 // Public
 //===============================
 function getTrackID(a_track_name, a_album, a_artist, a_callback){
-	m_track_info = [a_track_name, a_album, a_artist, a_callback];
-
-	prv_getTrackID(m_track_info[TRACK]);
+	var l_track_info;
+	l_track_info = [a_track_name, a_album, a_artist, a_callback];
+	
+	prv_getTrackID(l_track_info);
 }
 
 
 //===============================
 // Private
 //===============================
-function prv_getTrackID(a_track_name){
+function prv_getTrackID(a_track_info){
 	var xhr = new XMLHttpRequest();
 	var str = new String();
 
 	str += SPOTIFY_ENDPOINT;
-	str += a_track_name;
+	str += a_track_info[TRACK];
 
 	console.log(str);
 
@@ -44,8 +43,10 @@ function prv_getTrackID(a_track_name){
 			while(i<resp.tracks.length){
 				l_artist = resp.tracks[i].artists[0].name;
 				l_album = resp.tracks[i].album.name;
-				if(l_artist == m_track_info[ARTIST] && l_album == m_track_info[ALBUM]){
-					l_track_id = resp.tracks[i]['external-ids'][0].id;
+				console.log(a_track_info);
+				if(l_artist == a_track_info[ARTIST] && l_album == a_track_info[ALBUM]){
+					l_track_id = resp.tracks[i].href;
+//					l_track_id = resp.tracks[i]['external-ids'][0].id;
 					console.log(l_track_id);
 					break;
 				}
@@ -53,7 +54,7 @@ function prv_getTrackID(a_track_name){
 			}
 
 			//Notify track-id
-			m_track_info[CALLBACK](l_track_id);
+			a_track_info[CALLBACK](l_track_id);
 		}
 	}
 	xhr.send();
@@ -66,5 +67,5 @@ function test(){
 	console.log("[spotify_get_id] test");
 
 	var testCallback = function(track){console.log(track);}
-	getTrackID("Tea for Two", "Summer Jazz", "Art atum", testCallback);
+	getTrackID("Tea for Two", "Summer Jazz", "Art Tatum", testCallback);
 }
