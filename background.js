@@ -131,7 +131,10 @@ function getSpotifyTrackIdList(data, callback) {
   for (var i=0; i<data.length; i++) {
     getTrackID(data[i].track, data[i].album, data[i].artist, function(trackId){
       if (trackId) {
+        console.log("Spotify Track ID: " + trackId);
         trackIdList.push(trackId);
+      } else {
+        console.log("Spotifyで見つかりませんでした");
       }
       count--;
       if (count <= 0) {
