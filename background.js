@@ -7,7 +7,7 @@ var attribute = "RADIOGENRE";
 var REGISTER_ENDPOINT = "https://c3868672.web.cddbp.net/webapi/json/1.0/register?client=" + CLIENT_ID;
 var FIELD_ENDPOINT = "https://c3868672.web.cddbp.net/webapi/json/1.0/radio/fieldvalues?fieldname=" + attribute + "&client=" + CLIENT_ID;
 
-var RETURN_COUNT = 10;
+var RETURN_COUNT = 25;
 var RYTHM_ENDPOINT = "https://c3868672.web.cddbp.net/webapi/json/1.0/radio/create?client=" + CLIENT_ID + "&return_count=" + RETURN_COUNT;
 var WEB_ENDPOINT = "https://c3868672.web.cddbp.net/webapi/json/1.0/album_search?mode=single_best&client=" + CLIENT_ID + "&return_count=" + RETURN_COUNT;
 
@@ -138,6 +138,8 @@ function getSpotifyTrackIdList(data, callback) {
       }
       count--;
       if (count <= 0) {
+        console.log("コールバック受け取り完了");
+        console.log(trackIdList);
         callback(trackIdList);
       }
     });
