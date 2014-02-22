@@ -20,4 +20,4 @@ This project joins Music Hack Day Tokyo 2014.
 * Keisuke Kobayashi
 * Takuya Sugiyama
 * Tomoyo Obata
-* Yusuke Takahashi
+* Yuta Takahashi
