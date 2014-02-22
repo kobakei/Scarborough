@@ -146,6 +146,26 @@ function getSpotifyTrackIdList(data, callback) {
   }
 }
 
+// 通知を表示する
+function showNotification(title, body) {
+  var notification = webkitNotifications.createNotification(
+    'icon128.png', //'48.png',  // icon url - can be relative
+    title,  // notification title
+    body  // notification body text
+  );
+  notification.show();
+
+  // 1minで自動で消す
+  chrome.alarms.onAlarm.addListener(function(alarm){
+    console.log("Alarm:" + alarm.name);
+    notification.cancel();
+  });
+  chrome.alarms.create("delete_notification", {
+    delayInMinutes: 0.15
+  });
+}
+
+
 // 以下、メインの処理
 
 // UserID取得
@@ -195,3 +215,6 @@ chrome.tabs.onUpdated.addListener(
     localStorage["tab_title"] = tab.title;
   }
 );
+
+// test
+showNotification('Scarborough', '息抜き中ならこんな音楽はいかが？');
