@@ -1,7 +1,7 @@
 {
   "name": "Scarborough",
   "manifest_version": 2,
-  "version": "0.5",
+  "version": "1.0",
   "description": "Music Hack Day 2014",
   "icons": {
     "128": "icon128.png"
@@ -12,10 +12,14 @@
       "js": ["jquery-1.7.min.js", "contentscript.js"]
     }
   ],
-  "background_page": "background.html",
+  "background": {
+    "persistent": false,
+    "scripts": ["bg.js"]
+  },
   "browser_action": {
     "default_icon": "icon128.png",
-    "default_title": "DownloadHighlighter"
+    "default_title": "Scarborough",
+    "default_popup": "popup.html"
   },
   "permissions": [
     "tabs"
