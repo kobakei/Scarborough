@@ -10,6 +10,16 @@ var FIELD_ENDPOINT = "https://c3868672.web.cddbp.net/webapi/json/1.0/radio/field
 var RETURN_COUNT = 25;
 var RYTHM_ENDPOINT = "https://c3868672.web.cddbp.net/webapi/json/1.0/radio/create?client=" + CLIENT_ID + "&return_count=" + RETURN_COUNT;
 var WEB_ENDPOINT = "https://c3868672.web.cddbp.net/webapi/json/1.0/album_search?mode=single_best&client=" + CLIENT_ID + "&return_count=" + RETURN_COUNT;
+var associative_rule = [];
+
+associative_rule[0] = []
+associative_rule[0].expr = /.*[sS]potify.*/;
+associative_rule[0].jenre = "25964";
+associative_rule[0].jenre_description = "Rock";
+associative_rule[0].mood = "65332";
+associative_rule[0].mood_description = "Lively";
+associative_rule[0].ere = "";
+
 
 // UserIDをストレージに保存する
 function saveGracenoteUserId(user_id) {
@@ -165,6 +175,23 @@ function showNotification(title, body) {
   });
 }
 
+// タイトルからムード等を設定する
+function saveParamsByTitle(title) {
+  for (i = 0; i < associative_rule.length; i=i+1) {
+    expr = associative_rule[i].expr;
+    if (expr.test(title)) {
+      localStorage["mood"] = associative_rule[i].mood;
+      localStorage["jenre"] = associative_rule[i].jenre;
+      localStorage["ere"] = associative_rule[i].ere;
+
+      console.log("mood: " + associative_rule[i].mood_description);
+      console.log("jenre: " + associative_rule[i].jenre_description);
+      console.log("ere: " + associative_rule[i].ere);
+    }
+  }
+  localStorage["tab_title"] = title;
+}
+
 
 // 以下、メインの処理
 
@@ -211,12 +238,15 @@ chrome.tabs.onUpdated.addListener(function(tab_id, actInfo, tab) {
     return;
   }
   if (tab) {
+    saveParamsByTitle(tab.title);
     localStorage["tab_title"] = tab.title;
+    
   }
 });
 
 chrome.tabs.onActivated.addListener(function(actInfo) {
   chrome.tabs.get(actInfo.tabId, function(tab) {
+    saveParamsByTitle(tab.title);
     localStorage["tab_title"] = tab.title;
   });
 });
