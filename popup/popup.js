@@ -1,6 +1,7 @@
 (function($) {
 	$(document).ready(function() {
 		eventAdd();
+		isPlaylist();
 		getcardlist();
 	});
 
@@ -13,10 +14,19 @@
 			back();
 		});
 	}
-
+	
+	function isPlaylist() {
+		if (localStorage["present_playlist"]) {
+			$('#list').hide();
+			var url = 'https://embed.spotify.com/?uri=spotify:trackset:' + localStorage["present_playlist"];
+			$('<iframe />').attr('src', url).attr('frameborder', '0').attr('allowtransparency', 'true').attr('width', '300').attr('height', '380').appendTo('#playlist');
+			$('#playlist').show();
+		}
+	}
+	
 	function getcardlist() {
-		$('#list').append('<li data-id="'+ 4 +'" class="card">'+ localStorage["tab_title"] +'をみているあなたへのおすすめ</li>');
-		var title = ['1','2', '3'];
+		$('#list').append('<li data-id="'+ 5 +'" class="card">'+ localStorage["tab_title"] +'をみているあなたへのおすすめ</li>');
+		var title = ['1','2', '3', '4'];
 		for (var i=1 ; i<=title.length ; i++){
 			$('#list').append('<li data-id="'+ CARD_LIST[i].id +'" class="card">'+ CARD_LIST[i].message +'</li>');
 		}
@@ -54,6 +64,7 @@
 		}, function(response) {
 			console.log(response);
 			var list = response.ids.join(',');
+			localStorage["present_playlist"] = list;
 			//このURLをAPIでかえす
 			var url = 'https://embed.spotify.com/?uri=spotify:trackset:' + list;
 			$('<iframe />').attr('src', url).attr('frameborder', '0').attr('allowtransparency', 'true').attr('width', '300').attr('height', '380').appendTo('#playlist');
