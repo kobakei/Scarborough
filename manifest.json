@@ -14,7 +14,7 @@
   ],
   "background": {
     "persistent": false,
-    "scripts": ["jquery-1.7.min.js", "bg.js"]
+    "scripts": ["gracenote_get_id.js"]
   },
   "browser_action": {
     "default_icon": "icon128.png",
