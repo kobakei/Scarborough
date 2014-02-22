@@ -244,5 +244,5 @@ CARD_LIST = {
     message: "鬱だ氏のう",
     genre: "25974",
     mood: "42948"
-  }
+  }  
 };

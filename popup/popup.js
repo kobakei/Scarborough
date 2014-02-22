@@ -15,6 +15,7 @@
 	}
 
 	function getcardlist() {
+		$('#list').append('<li data-id="'+ 4 +'" class="card">'+ localStorage["tab_title"] +'をみているあなたへのおすすめ</li>');
 		var title = ['1','2', '3'];
 		for (var i=1 ; i<=title.length ; i++){
 			$('#list').append('<li data-id="'+ CARD_LIST[i].id +'" class="card">'+ CARD_LIST[i].message +'</li>');
