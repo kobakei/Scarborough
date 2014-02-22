@@ -22,7 +22,12 @@
   },
   "permissions": [
     "tabs",
+    "alarms",
+    "notifications",
     "https://*.web.cddbp.net/"
+  ],
+  "web_accessible_resources": [
+    "icon128.png"
   ],
   "options_page": "options.html"
 }

@@ -41,10 +41,12 @@ function prv_getTrackID(a_track_info){
 			l_track_id = null;
 
 			while(i<resp.tracks.length){
-				l_artist = resp.tracks[i].artists[0].name;
-				l_album = resp.tracks[i].album.name;
-				console.log(a_track_info);
-				if(l_artist == a_track_info[ARTIST] && l_album == a_track_info[ALBUM]){
+				l_artist = resp.tracks[i].artists[0].name.toLowerCase();
+				l_album = resp.tracks[i].album.name.toLowerCase();
+				l_artist2 = a_track_info[ARTIST].toLowerCase();
+				l_album2 = a_track_info[ALBUM].toLowerCase();
+				
+				if(l_artist == l_artist2 && l_album == l_album2){
 					l_track_id = resp.tracks[i].href.replace("spotify:track:", "");
 //					l_track_id = resp.tracks[i]['external-ids'][0].id;
 					console.log(l_track_id);
