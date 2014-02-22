@@ -3,7 +3,7 @@
 		eventAdd();
 		setcardimg();
 	});
-	
+
 	function eventAdd() {
 		$(document).on('click', '.card', function(e) {
 			makelist();
@@ -13,15 +13,18 @@
 			back();
 		});
 
+		$(document).on('click', '#test', function(e) {
+			kickapi();
+		});
 	}
-	
+
 	function setcardimg() {
 		$('.card').each(function() {
 			$(this).css('background-image','url(http://31.media.tumblr.com/78ce1831f575f06a6ca966ee2c9198f1/tumblr_n10nb0TY4u1st5lhmo1_1280.jpg)');
-		});	
+		});
 	}
-	
-	
+
+
 	function makelist() {
 
 		$('#list').slideUp();

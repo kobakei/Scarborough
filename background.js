@@ -1,13 +1,15 @@
 console.log("*** Getting Gracenote User ID ***");
 
+var userId;
+
 var CLIENT_ID = "3868672-53AC3535785097C37E0B299756B825FB";
 var attribute = "RADIOGENRE";
 var REGISTER_ENDPOINT = "https://c3868672.web.cddbp.net/webapi/json/1.0/register?client=" + CLIENT_ID;
-var FIELD_ENDPOINT = "https://c3868672.web.cddbp.net/webapi/json/1.0/radio/fieldvalues?fieldname=" + attribute + "&client=" + CLIENT_ID + "&user=" + userId;
+var FIELD_ENDPOINT = "https://c3868672.web.cddbp.net/webapi/json/1.0/radio/fieldvalues?fieldname=" + attribute + "&client=" + CLIENT_ID;
 
 var RETURN_COUNT = 5;
-var RYTHM_ENDPOINT = "https://c3868672.web.cddbp.net/webapi/json/1.0/radio/create?client=" + CLIENT_ID + "&user=" + userId + "&return_count=" + RETURN_COUNT;
-var WEB_ENDPOINT = "https://c3868672.web.cddbp.net/webapi/json/1.0/album_search?mode=single_best&client=" + CLIENT_ID + "&user=" + userId + "&return_count=" + RETURN_COUNT;
+var RYTHM_ENDPOINT = "https://c3868672.web.cddbp.net/webapi/json/1.0/radio/create?client=" + CLIENT_ID + "&return_count=" + RETURN_COUNT;
+var WEB_ENDPOINT = "https://c3868672.web.cddbp.net/webapi/json/1.0/album_search?mode=single_best&client=" + CLIENT_ID + "&return_count=" + RETURN_COUNT;
 
 // UserIDをストレージに保存する
 function saveGracenoteUserId(user_id) {
@@ -27,7 +29,7 @@ function getUserId() {
       // JSON.parse does not evaluate the attacker's scripts.
       var resp = JSON.parse(xhr.responseText);
       console.log(resp);
-      var userId = resp["RESPONSE"][0]["USER"][0]["VALUE"];
+      userId = resp["RESPONSE"][0]["USER"][0]["VALUE"];
       console.log("User ID = " + userId);
       saveGracenoteUserId(userId);
     }
@@ -38,7 +40,8 @@ function getUserId() {
 // Gracenoteを叩いて、Rythm APIフィールドリストを取得
 function getFieldList() {
   var xhr = new XMLHttpRequest();
-  xhr.open("GET", FIELD_ENDPOINT, true);
+  var url = FIELD_ENDPOINT + "&user=" + userId;
+  xhr.open("GET", url, true);
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4) {
       // JSON.parse does not evaluate the attacker's scripts.
@@ -53,7 +56,7 @@ function getFieldList() {
 
 // ジャンル・ムード・時代でトラックリストを取得します
 function getTrackListByRythm(genre, mood, era, callback) {
-  var url = RYTHM_ENDPOINT;
+  var url = RYTHM_ENDPOINT + "&user=" + userId;
   if (genre) {
     url = url + "&genre=" + genre;
   }
@@ -69,8 +72,18 @@ function getTrackListByRythm(genre, mood, era, callback) {
     if (xhr.readyState == 4) {
       // JSON.parse does not evaluate the attacker's scripts.
       var text = xhr.responseText;
-      var resp = JSON.parse(text);
-      console.log(resp);
+      var obj = JSON.parse(text);
+      console.log(obj);
+      // いい感じに整形
+      var resp = [];
+      for (var i=0; i<obj['RESPONSE'][0]['ALBUM'].length; i++) {
+        var album = obj['RESPONSE'][0]['ALBUM'][i];
+        resp.push({
+          artist: album['ARTIST'][0]['VALUE'],
+          album: album['TITLE'][0]['VALUE'],
+          track: album['TRACK'][0]['TITLE'][0]['VALUE']
+        });
+      }
       callback(resp);
     }
   }
@@ -79,7 +92,7 @@ function getTrackListByRythm(genre, mood, era, callback) {
 
 // アーティスト名・アルバム名で取得
 function getTrackListByWeb(artist, album) {
-  var url = RYTHM_ENDPOINT;
+  var url = RYTHM_ENDPOINT + "&user=" + userId;
   if (artist) {
     url = url + "&artist_name=" + artist;
   }
@@ -89,7 +102,17 @@ function getTrackListByWeb(artist, album) {
     if (xhr.readyState == 4) {
       // JSON.parse does not evaluate the attacker's scripts.
       var text = xhr.responseText;
-      var resp = JSON.parse(text);
+      var obj = JSON.parse(text);
+      console.log(obj);
+      // いい感じに整形
+      var resp = [];
+      for (var i=0; i<obj.length; i++) {
+        resp.push({
+          artist: "",
+          album: "",
+          track: ""
+        });
+      }
       console.log(resp);
     }
   }
@@ -104,21 +127,40 @@ function getGenreAndMoodFromType(type) {
   };
 }
 
-// 以下、メインの処理
-var userId = null;
-if (localStorage["gracenote_user_id"]) {
-  userId = localStorage["gracenote_user_id"];
-  console.log("すでにUser IDが保存されています: " + localStorage["gracenote_user_id"]);
-} else {
-  getUserId();
+// トラック名などから、Spotify上のトラックIDを取得します
+function getSpotifyTrackId(album, artist, track, callback) {
+  // TODO
 }
+
+//
+function getSpotifyTrackIdList(data, callback) {
+  var count = RETURN_COUNT;
+  var trackIdList = [];
+  for (var i=0; i<data.length; i++) {
+    getSpotifyTrackId(data[i].album, data[i].artist, data[i].track, function(trackId){
+      trackIdList.push(trackId);
+      count--;
+      if (count <= 0) {
+        callback(trackIdList);
+      }
+    });
+  }
+}
+
+// 以下、メインの処理
+
+// UserID取得
+getUserId();
+
 // イベントハンドラの登録
+console.log("*** Adding event handler ***");
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     console.log("onMessage");
     if (request.type) {
       var obj = getGenreAndMoodFromType(request.type);
       getTrackListByRythm(obj.genre, obj.mood, null, function(data){
+        console.log(data);
         console.log("sendResponse");
         sendResponse({"hoge": "fuga"});
       });
