@@ -120,11 +120,8 @@ function getTrackListByWeb(artist, album) {
 }
 
 // ユーザーが選択したタイプから、ジャンルとムードに変換する
-function getGenreAndMoodFromType(type) {
-  return {
-    genre: 36060,
-    mood: null
-  };
+function getGenreAndMoodFromType(cardId) {
+  return CARD_LIST[cardId];
 }
 
 // トラック名などから、Spotify上のトラックIDを取得します
@@ -160,21 +157,29 @@ chrome.runtime.onMessage.addListener(
     //console.log(sendResponse);
     if (request.type) {
       var obj = getGenreAndMoodFromType(request.type);
-      getTrackListByRythm(obj.genre, obj.mood, null, function(data){
-        console.log(data);
-        sendResponse({
-          ids: [
-            "4bi73jCM02fMpkI11Lqmfe",
-            "4bi73jCM02fMpkI11Lqmfe",
-            "4bi73jCM02fMpkI11Lqmfe"
-          ]
+      if (obj) {
+        getTrackListByRythm(obj.genre, obj.mood, null, function(data){
+          console.log(data);
+
+          // TODO Spotify IDに変換
+
+          sendResponse({
+            ids: [
+              "4bi73jCM02fMpkI11Lqmfe",
+              "4bi73jCM02fMpkI11Lqmfe",
+              "4bi73jCM02fMpkI11Lqmfe"
+            ]
+          });
+          //console.log(chrome.runtime.lastError.message);
+          console.log("sendResponse success");
         });
-        //console.log(chrome.runtime.lastError.message);
-        console.log("sendResponse success");
-      });
+      } else {
+        sendResponse({});
+        console.log("sendResponse failure2");
+      }
     } else {
       sendResponse({});
-      console.log("sendResponse failure");
+      console.log("sendResponse failure1");
     }
     return true;
   }
