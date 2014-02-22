@@ -1,10 +1,6 @@
 (function($) {
 	$(document).ready(function() {
 		autoPlay();
-		
-		$('#main').click(function(){
-			$(this).css('background-color','red');
-		});
 	});
 
 	function autoPlay() {
