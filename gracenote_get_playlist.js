@@ -10,6 +10,7 @@ var FIELD_ENDPOINT = "https://c3868672.web.cddbp.net/webapi/json/1.0/radio/field
 
 var RETURN_COUNT = 5;
 var RYTHM_ENDPOINT = "https://c3868672.web.cddbp.net/webapi/json/1.0/radio/create?client=" + CLIENT_ID + "&user=" + userId + "&return_count=" + RETURN_COUNT;
+var WEB_ENDPOINT = "https://c3868672.web.cddbp.net/webapi/json/1.0/album_search?mode=single_best&client=" + CLIENT_ID + "&user=" + userId + "&return_count=" + RETURN_COUNT;
 
 // Gracenoteを叩いて、Rythm APIフィールドリストを取得
 function getFieldList() {
@@ -72,4 +73,4 @@ function getTrackListByWeb(artist, album) {
 }
 
 getTrackListByRythm(36060, null, null);
-//getTrackListByWeb("arctic monkeys");
+//getTrackListByWeb("Perfume");
