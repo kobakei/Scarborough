@@ -26,11 +26,13 @@
 	
 	function getcardlist() {
 		$('#list').append('<li data-id="'+ 5 +'" class="card">'+ localStorage["tab_title"] +'をみているあなたへのおすすめ</li>');
+		$('#list li:last').css('background-image', 'url(http://25.media.tumblr.com/3f62ba4c56724f227dba2b4415a61049/tumblr_myebqysYZ81st5lhmo1_1280.jpg)');
 		var title = ['1','2', '3', '4'];
 		for (var i=1 ; i<=title.length ; i++){
 			$('#list').append('<li data-id="'+ CARD_LIST[i].id +'" class="card">'+ CARD_LIST[i].message +'</li>');
+			$('#list li:last').css('background-image', 'url(' + CARD_LIST[i].img + ')');
 		}
-		setcardimg();
+		//setcardimg();
 	}
 
 	function setcardimg() {
