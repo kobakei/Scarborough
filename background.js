@@ -131,7 +131,15 @@ function getTrackListByWeb(artist, album) {
 
 // ユーザーが選択したタイプから、ジャンルとムードに変換する
 function getGenreAndMoodFromType(cardId) {
-  return CARD_LIST[cardId];
+  obj = CARD_LIST[cardId];
+  if (cardId == 5) {
+    if (localStorage["mood"]) {
+      obj.mood = localStorage["mood"];
+      obj.jenre = localStorage["jenre"];
+      obj.ere = localStorage["ere"];
+    }
+  }
+  return obj;
 }
 
 // 必要な数だけSpotify Track IDの配列を取得します
