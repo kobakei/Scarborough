@@ -5,20 +5,32 @@ var REGISTER_ENDPOINT = "https://c3868672.web.cddbp.net/webapi/json/1.0/register
 
 // UserIDをストレージに保存する
 function saveGracenoteUserId(user_id) {
-  localStorage["gracenote_user_id"] = user_id;
+  if (localStorage) {
+    localStorage["gracenote_user_id"] = user_id;
+  } else {
+    console.log("ローカルストレージが使えません");
+  }
 }
 
 // Gracenoteを叩く
-var xhr = new XMLHttpRequest();
-xhr.open("GET", REGISTER_ENDPOINT, true);
-xhr.onreadystatechange = function() {
-  if (xhr.readyState == 4) {
-    // JSON.parse does not evaluate the attacker's scripts.
-    var resp = JSON.parse(xhr.responseText);
-    console.log(resp);
-    var userId = resp["RESPONSE"][0]["USER"][0]["VALUE"];
-    console.log("User ID = " + userId);
-    saveGracenoteUserId(userId);
+function sendRequest() {
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", REGISTER_ENDPOINT, true);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState == 4) {
+      // JSON.parse does not evaluate the attacker's scripts.
+      var resp = JSON.parse(xhr.responseText);
+      console.log(resp);
+      var userId = resp["RESPONSE"][0]["USER"][0]["VALUE"];
+      console.log("User ID = " + userId);
+      saveGracenoteUserId(userId);
+    }
   }
+  xhr.send();
 }
-xhr.send();
+
+if (localStorage["gracenote_user_id"]) {
+  console.log("すでにUser IDが保存されています: " + localStorage["gracenote_user_id"]);
+} else {
+  sendRequest();
+}
