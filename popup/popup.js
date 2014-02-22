@@ -25,12 +25,14 @@
 	}
 
 	function getcardlist() {
-		var title = ['5', '6', '1', '2', '3', '4', '7'];
+		var title = ['5', '1', '2', '3', '4']; //DEF list
+		title.unshift(getTime());
+		
 		for (var i = 0; i <= title.length; i++) {
 			if (title[i] == 5) {
 				$('#list').append('<li data-id="' + 5 + '" class="card">' + localStorage["tab_title"] + 'をみているあなたへのおすすめ</li>');
 			} else {
-				$('#list').append('<li data-id="' + CARD_LIST[title[i]].id + '" class="card '+ CARD_LIST[title[i]].addclass + '">' + CARD_LIST[title[i]].message + '</li>');
+				$('#list').append('<li data-id="' + CARD_LIST[title[i]].id + '" class="card ' + CARD_LIST[title[i]].addclass + '">' + CARD_LIST[title[i]].message + '</li>');
 			}
 			$('#list li:last').css('background-image', 'url(' + CARD_LIST[title[i]].img + ')');
 		}
@@ -72,5 +74,11 @@
 			$('#playlist').show();
 		});
 	}
+
+	function getTime() {
+		var date = new Date(), h = date.getHours();
+		var nn = ["10", "11", "12", "12", "13", "14"];
+		return nn[Math.ceil(h / 4) - 1];
+	};
 
 })(jQuery);
