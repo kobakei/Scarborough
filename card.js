@@ -230,7 +230,7 @@ CARD_LIST = {
   1: {
   	id : "1",
     message: "上司に激おこプンプン丸！",
-    genre: "36051",
+    genre: "36053",
     mood: "42955"
   },
   2: {
@@ -241,7 +241,7 @@ CARD_LIST = {
   },
   3: {
   	id : "3",
-    message: "鬱だ氏のう",
+    message: "おやすみなさい",
     genre: "25974",
     mood: "42948"
   }  
