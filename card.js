@@ -261,5 +261,14 @@ CARD_LIST = {
 		genre : "36056",
 		mood : "65326",
 		img : "http://25.media.tumblr.com/8fb80a2a6111ffbf05defc3a758a2f8a/tumblr_n10n4rpjvZ1st5lhmo1_1280.jpg"
-	}
+	},
+	6 : {
+		id : "6",
+		message : "Good Morning Takuya!",
+		addclass : "black",
+		genre : "65322",
+		mood : "36059",
+		img : "http://24.media.tumblr.com/56fea5f4c81a60e418a83e114ac07414/tumblr_myp99avE2U1st5lhmo1_1280.jpg"
+	},
+
 };

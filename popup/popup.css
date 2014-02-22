@@ -16,7 +16,7 @@ body:before {
 	color : #fff;
 	font-weight :bold;
 	/*margin: 10px;*/
-	padding: 10px;
+	padding: 20px 10px;
 	/*height: 80px;*/
 	width: 100%;
 	border-bottom: 1px solid #aaa;
@@ -28,6 +28,10 @@ body:before {
 
 .card:hover {
 	cursor:pointer;
+}
+
+.black {
+	color: #333;
 }
 
 #playlist {
