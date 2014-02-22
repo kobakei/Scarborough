@@ -74,3 +74,12 @@ function getTrackListByWeb(artist, album) {
 
 getTrackListByRythm(36060, null, null);
 //getTrackListByWeb("Perfume");
+
+
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    console.log("onMessage");
+    if (request.greeting == "hello")
+      sendResponse({"hoge": "fuga"});
+  }
+);
