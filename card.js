@@ -243,7 +243,7 @@ CARD_LIST = {
 	},
 	3 : {
 		id : "3",
-		message : "Good Night...",
+		message : "moremoremore",
 		genre : "25974",
 		mood : "42948",
 		img : "http://25.media.tumblr.com/8fb80a2a6111ffbf05defc3a758a2f8a/tumblr_n10n4rpjvZ1st5lhmo1_1280.jpg"
@@ -251,6 +251,7 @@ CARD_LIST = {
 	4 : {
 		id : "4",
 		message : "Harder better faster stronger",
+		addclass : "black",
 		genre : "36054",
 		mood : "65326",
 		img : "http://www.sukacuka.com/wp-content/uploads/2012/07/Cabaran-SEO-Eriqazz-vs-Denaihati-600x288.png"
@@ -262,12 +263,45 @@ CARD_LIST = {
 		mood : "65326",
 		img : "http://25.media.tumblr.com/7b53f50fd7f50ca8bdd69a68352a036d/tumblr_mqq48zRR9x1st5lhmo1_1280.jpg"
 	},
-	6 : {
-		id : "6",
-		message : "Good Morning Takuya!",
+
+	//time
+	10 : {
+		id : "10",
+		message : "Midnight slowly music",
+		addclass : "black",
+		genre : "65330",
+		mood : "25974",
+		img : "http://24.media.tumblr.com/56fea5f4c81a60e418a83e114ac07414/tumblr_myp99avE2U1st5lhmo1_1280.jpg"
+	},
+	11 : {
+		id : "11",
+		message : "Good Morning!",
 		addclass : "black",
 		genre : "65322",
 		mood : "36059",
 		img : "http://24.media.tumblr.com/56fea5f4c81a60e418a83e114ac07414/tumblr_myp99avE2U1st5lhmo1_1280.jpg"
-	}
+	},
+	12 : {
+		id : "12",
+		message : "Hello!",
+		addclass : "black",
+		genre : "42961",
+		mood : "36054",
+		img : "http://24.media.tumblr.com/56fea5f4c81a60e418a83e114ac07414/tumblr_myp99avE2U1st5lhmo1_1280.jpg"
+	},
+	13 : {
+		id : "13",
+		message : "Good evening.",
+		addclass : "black",
+		genre : "65322",
+		mood : "36059",
+		img : "http://24.media.tumblr.com/56fea5f4c81a60e418a83e114ac07414/tumblr_myp99avE2U1st5lhmo1_1280.jpg"
+	},
+	14 : {
+		id : "14",
+		message : "Good Night...",
+		genre : "25974",
+		mood : "42948",
+		img : "http://25.media.tumblr.com/8fb80a2a6111ffbf05defc3a758a2f8a/tumblr_n10n4rpjvZ1st5lhmo1_1280.jpg"
+	},
 };
