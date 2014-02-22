@@ -1,4 +1,5 @@
 body {
+	width: 330px;
 }
 body:before {
     content: "";
