@@ -6,7 +6,7 @@
 
 	function eventAdd() {
 		$(document).on('click', '.card', function(e) {
-			makelist();
+			makelist(this);
 		});
 
 		$(document).on('click', '#back', function(e) {
@@ -15,9 +15,9 @@
 	}
 
 	function getcardlist() {
-		var title = ['オシャレカフェでドヤリングするオレｶｺ(・∀・)ｲｲ!!', '気になる女の子からメール返ってこない' , '2chのまとめでもひまつぶしにみるか'];
-		for (var i=0 ; i<=title.length -1 ; i++){
-			$('#list').append('<li class="card">'+ title[i] +'</li>');
+		var title = ['1','2', '3'];
+		for (var i=1 ; i<=title.length ; i++){
+			$('#list').append('<li data-id="'+ CARD_LIST[i].id +'" class="card">'+ CARD_LIST[i].message +'</li>');
 		}
 		setcardimg();
 	}
@@ -35,9 +35,9 @@
 		});
 	}
 
-	function makelist() {
-		kickapi();
-		$('#list').slideUp();
+	function makelist(that) {
+		kickapi(that);
+		$('#list').slideUp('slow');
 	};
 
 	function back() {
@@ -45,10 +45,11 @@
 		$('#list').show();
 	}
 
-	function kickapi() {
+	function kickapi(that) {
+		var $this = $(that);
 		// 第一引数に選択されたモード、第二引数がコールバック
 		chrome.runtime.sendMessage({
-			type : "1"
+			type : $this.attr('data-id')
 		}, function(response) {
 			console.log(response);
 			var list = response.ids.join(',');
