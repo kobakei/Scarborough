@@ -1,5 +1,6 @@
 {
   "name": "Scarborough",
+  "manifest_version": 2,
   "version": "0.5",
   "description": "Music Hack Day 2014",
   "icons": {
