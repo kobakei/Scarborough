@@ -1,3 +1,20 @@
 body {
 	margin : 0;
 }
+
+#main {
+	background-color : #eee;
+}
+
+.card {
+	margin : 20px 10px;
+	padding : 10px;
+	height : 173.1px;
+	width : 280px;
+	border : 1px solid #aaa;
+	background-color : #fff;
+}
+
+#playlist {
+	display : none;
+}
