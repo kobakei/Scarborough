@@ -3,7 +3,7 @@ console.log("*** Getting Gracenote User ID ***");
 var userId;
 
 var CLIENT_ID = "3868672-53AC3535785097C37E0B299756B825FB";
-var attribute = "RADIOGENRE";
+var attribute = "RADIOERA";
 var REGISTER_ENDPOINT = "https://c3868672.web.cddbp.net/webapi/json/1.0/register?client=" + CLIENT_ID;
 var FIELD_ENDPOINT = "https://c3868672.web.cddbp.net/webapi/json/1.0/radio/fieldvalues?fieldname=" + attribute + "&client=" + CLIENT_ID;
 
@@ -42,6 +42,9 @@ function getUserId() {
       userId = resp["RESPONSE"][0]["USER"][0]["VALUE"];
       console.log("User ID = " + userId);
       saveGracenoteUserId(userId);
+
+      //test
+      getFieldList();
     }
   }
   xhr.send();
@@ -101,6 +104,7 @@ function getTrackListByRythm(genre, mood, era, callback) {
 }
 
 // アーティスト名・アルバム名で取得
+/*
 function getTrackListByWeb(artist, album) {
   var url = RYTHM_ENDPOINT + "&user=" + userId;
   if (artist) {
@@ -127,7 +131,7 @@ function getTrackListByWeb(artist, album) {
     }
   }
   xhr.send();
-}
+}*/
 
 // ユーザーが選択したタイプから、ジャンルとムードに変換する
 function getGenreAndMoodFromType(cardId) {
