@@ -3,7 +3,7 @@ console.log("*** Getting Gracenote User ID ***");
 var userId;
 
 var CLIENT_ID = "3868672-53AC3535785097C37E0B299756B825FB";
-var attribute = "RADIOGENRE";
+var attribute = "RADIOERA";
 var REGISTER_ENDPOINT = "https://c3868672.web.cddbp.net/webapi/json/1.0/register?client=" + CLIENT_ID;
 var FIELD_ENDPOINT = "https://c3868672.web.cddbp.net/webapi/json/1.0/radio/fieldvalues?fieldname=" + attribute + "&client=" + CLIENT_ID;
 
@@ -27,21 +27,9 @@ associative_rule[1].situation = "bussiness";
 associative_rule[2] = [];
 associative_rule[2].expr = /.*www\.2ch\.net.*/;
 associative_rule[2].situation = "play";
-
-rule_group[0] = [];
-rule_group[0].jenre = "36054";
-rule_group[0].jenre_description = "Dance & House";
-rule_group[0].mood = "65333";
-rule_group[0].mood_description = "Upbeat";
-rule_group[0].ere = "";
-rule_group[0].situation = "business";
-rule_group[1] = [];
-rule_group[1].jenre = "36056";
-rule_group[1].jenre_description = "Pop";
-rule_group[1].mood = "42945";
-rule_group[1].mood_description = "Empowering";
-rule_group[1].ere = "";
-rule_group[1].situation = "play";
+associative_rule[3] = [];
+associative_rule[3].expr = /.*livedoor.*/;
+associative_rule[3].situation = "play";
 
 // UserIDをストレージに保存する
 function saveGracenoteUserId(user_id) {
@@ -64,6 +52,9 @@ function getUserId() {
       userId = resp["RESPONSE"][0]["USER"][0]["VALUE"];
       console.log("User ID = " + userId);
       saveGracenoteUserId(userId);
+
+      //test
+      //getFieldList();
     }
   }
   xhr.send();
@@ -88,14 +79,15 @@ function getFieldList() {
 
 // ジャンル・ムード・時代でトラックリストを取得します
 function getTrackListByRythm(genre, mood, era, callback) {
+  console.log("getTrackListByRythm");
   var url = RYTHM_ENDPOINT + "&user=" + userId;
-  if (genre) {
+  if (genre && genre.length > 0) {
     url = url + "&genre=" + genre;
   }
-  if (mood) {
+  if (mood && mood.length > 0) {
     url = url + "&mood=" + mood;
   }
-  if (era) {
+  if (era && era.length > 0) {
     url = url + "&era=" + era;
   }
   var xhr = new XMLHttpRequest();
@@ -108,21 +100,25 @@ function getTrackListByRythm(genre, mood, era, callback) {
       console.log(obj);
       // いい感じに整形
       var resp = [];
-      for (var i=0; i<obj['RESPONSE'][0]['ALBUM'].length; i++) {
-        var album = obj['RESPONSE'][0]['ALBUM'][i];
-        resp.push({
-          artist: album['ARTIST'][0]['VALUE'],
-          album: album['TITLE'][0]['VALUE'],
-          track: album['TRACK'][0]['TITLE'][0]['VALUE']
-        });
+      if (obj['RESPONSE'][0]['ALBUM']) {
+        for (var i=0; i<obj['RESPONSE'][0]['ALBUM'].length; i++) {
+          var album = obj['RESPONSE'][0]['ALBUM'][i];
+          resp.push({
+            artist: album['ARTIST'][0]['VALUE'],
+            album: album['TITLE'][0]['VALUE'],
+            track: album['TRACK'][0]['TITLE'][0]['VALUE']
+          });
+        }
       }
       callback(resp);
     }
   }
   xhr.send();
+  return true;
 }
 
 // アーティスト名・アルバム名で取得
+/*
 function getTrackListByWeb(artist, album) {
   var url = RYTHM_ENDPOINT + "&user=" + userId;
   if (artist) {
@@ -149,11 +145,13 @@ function getTrackListByWeb(artist, album) {
     }
   }
   xhr.send();
-}
+}*/
 
 // ユーザーが選択したタイプから、ジャンルとムードに変換する
 function getGenreAndMoodFromType(cardId) {
   obj = CARD_LIST[cardId];
+
+  // Card ID = 5のときは、ローカルストレージに保存した設定（タブから決まったもの）を使う
   if (cardId == 5) {
     if (localStorage["mood"]) {
       obj.mood = localStorage["mood"];
@@ -166,6 +164,7 @@ function getGenreAndMoodFromType(cardId) {
 
 // 必要な数だけSpotify Track IDの配列を取得します
 function getSpotifyTrackIdList(data, callback) {
+  console.log("getSpotifyTrackIdList");
   var count = RETURN_COUNT;
   var trackIdList = [];
   for (var i=0; i<data.length; i++) {
@@ -184,45 +183,88 @@ function getSpotifyTrackIdList(data, callback) {
       }
     });
   }
+  return true;
 }
+
+var notification = null;
 
 // 通知を表示する
 function showNotification(title, body) {
-  var notification = webkitNotifications.createNotification(
+  if (notification) {
+    notification.cancel();
+  }
+  notification = webkitNotifications.createNotification(
     'icon128.png', //'48.png',  // icon url - can be relative
     title,  // notification title
     body  // notification body text
-  );
+    );
   notification.show();
 
   // 1minで自動で消す
   chrome.alarms.onAlarm.addListener(function(alarm){
     console.log("Alarm:" + alarm.name);
-    notification.cancel();
+    if (notification) {
+      notification.cancel();
+      notification = null;
+    }
   });
   chrome.alarms.create("delete_notification", {
     delayInMinutes: 0.15
   });
 }
 
+function getGenreName(id) {
+  if (id == "") {
+    return "";
+  }
+  for (var i=0; i<GENRE_LIST.length; i++) {
+    if (GENRE_LIST[i]['ID'] == id) {
+      return GENRE_LIST[i]['VALUE'];
+    }
+  }
+  return "";
+}
+
+function getMoodName(id) {
+  if (id == "") {
+    return "";
+  }
+  for (var i=0; i<MOOD_LIST.length; i++) {
+    if (MOOD_LIST[i]['ID'] == id) {
+      return MOOD_LIST[i]['VALUE'];
+    }
+  }
+  return "";
+}
+
 // シチュエーションからムード等を設定する
 function convertParams(situation) {
   if (situation == "business") {
-    localStorage["mood"] = rule_group[0].mood;
-    localStorage["jenre"] = rule_group[0].jenre;
-    localStorage["ere"] = rule_group[0].ere;
-
+    // 仕事
+    localStorage["mood"]　= localStorage["mood1"];
+    localStorage["jenre"]　= localStorage["genre1"];
+    localStorage["ere"]　= localStorage["era1"];
   } else if (situation == "play") {
-    localStorage["mood"] = rule_group[1].mood;
-    localStorage["jenre"] = rule_group[1].jenre;
-    localStorage["ere"] = rule_group[1].ere;
+    // 遊び
+    localStorage["mood"]　= localStorage["mood2"];
+    localStorage["jenre"]　= localStorage["genre2"];
+    localStorage["ere"]　= localStorage["era2"];
+  } else {
+    // その他
+    localStorage["mood"]　= localStorage["mood3"];
+    localStorage["jenre"]　= localStorage["genre3"];
+    localStorage["ere"]　= localStorage["era3"];
   }
 }
 
 // タイトルからムード等を設定する
-function saveParamsByTitle(tab) {
-  domain = tab.url.match(getDomainExpr);
+function saveParamsByTitle(title, url) {
+  var prevMood = localStorage["mood"];
+  var prevGenre = localStorage["jenre"];
+  var prevEra = localStorage["ere"];
+  var domain = url.match(getDomainExpr);
   console.log(domain);
+
   for (i = 0; i < associative_rule.length; i=i+1) {
     expr = associative_rule[i].expr;
     if (expr.test(domain)) {
@@ -244,8 +286,25 @@ function saveParamsByTitle(tab) {
       break;
     }
   }
-  localStorage["tab_title"] = tab.title;
-  localStorage["tab_url"] = tab.url;
+  localStorage["tab_title"] = title;
+  localStorage["tab_url"] = url;
+
+  // 新しい設定になったら、通知を出す
+  if (prevMood != localStorage["mood"] ||
+    prevGenre != localStorage["jenre"] ||
+    prevEra != localStorage["ere"]) {
+
+    moodName = getMoodName(localStorage["mood"]);
+    jenreName = getGenreName(localStorage["jenre"]);
+
+    if (moodName != "" && jenreName != "") {
+      showNotification('Scarborough', '今のあなたには ' + moodName + " な " + jenreName + " がおすすめ♪");
+    } else if (moodName != "") {
+      showNotification('Scarborough', '今のあなたには ' + moodName + " な曲がおすすめ♪");
+    } else if (jenreName != "") {
+      showNotification('Scarborough', '今のあなたには ' + jenreName + " がおすすめ♪");
+    }
+  }
 }
 
 
@@ -264,6 +323,7 @@ chrome.runtime.onMessage.addListener(
       var obj = getGenreAndMoodFromType(request.type);
       if (obj) {
         getTrackListByRythm(obj.genre, obj.mood, null, function(data){
+          console.log("Success to get track list by GN");
           console.log(data);
           // Spotify IDに変換
           getSpotifyTrackIdList(data, function(trackIds){
@@ -289,20 +349,39 @@ chrome.runtime.onMessage.addListener(
 );
 
 chrome.tabs.onUpdated.addListener(function(tab_id, actInfo, tab) {
+  console.log("tab update");
   // 取得不要時
   if (actInfo.status == "loading") {
     return;
   }
   if (tab) {
-    saveParamsByTitle(tab);
+    saveParamsByTitle(tab.title, tab.url);
   }
 });
 
 chrome.tabs.onActivated.addListener(function(actInfo) {
+  console.log(actInfo.tabId);
   chrome.tabs.get(actInfo.tabId, function(tab) {
-    saveParamsByTitle(tab);
+    saveParamsByTitle(tab.title, tab.url);
   });
 });
 
-// test
-showNotification('Scarborough', '息抜き中ならこんな音楽はいかが？');
+// 初期設定
+// Business
+if (!localStorage["mood1"]) {
+  localStorage["mood1"] = "42955";
+  localStorage["genre1"] = "36055";
+  localStorage["era1"] = "";
+}
+// Relax
+if (!localStorage["mood2"]) {
+  localStorage["mood2"] = "";
+  localStorage["genre2"] = "36063";
+  localStorage["era2"] = "";
+}
+// Other
+if (!localStorage["mood3"]) {
+  localStorage["mood3"] = "";
+  localStorage["genre3"] = "36056";
+  localStorage["era3"] = "";
+}

@@ -13,6 +13,11 @@
 		$(document).on('click', '#back', function(e) {
 			back();
 		});
+		
+		$(document).on('click', '#scarb', function(e) {
+			scarborough();
+		});
+
 	}
 
 	function isPlaylist() {
@@ -25,28 +30,30 @@
 	}
 
 	function getcardlist() {
-		var title = ['5', '6', '1', '2', '3', '4', '7'];
+		var title = ['5', '1', '2', '3', '4'];
+		//DEF list
+		title.unshift(getTime());
+
+		getWeather();
+		title.push('20');
+		title.push('30');
+
 		for (var i = 0; i <= title.length; i++) {
+			if (!title[i]) break; //おまじない
 			if (title[i] == 5) {
 				$('#list').append('<li data-id="' + 5 + '" class="card">' + localStorage["tab_title"] + 'をみているあなたへのおすすめ</li>');
 			} else {
-				$('#list').append('<li data-id="' + CARD_LIST[title[i]].id + '" class="card '+ CARD_LIST[title[i]].addclass + '">' + CARD_LIST[title[i]].message + '</li>');
+				$('#list').append('<li data-id="' + CARD_LIST[title[i]].id + '" class="card ' + CARD_LIST[title[i]].addclass + '">' + CARD_LIST[title[i]].message + '</li>');
 			}
 			$('#list li:last').css('background-image', 'url(' + CARD_LIST[title[i]].img + ')');
 		}
-		//setcardimg();
 	}
-
-	function setcardimg() {
-
-		var imgList = ["http://25.media.tumblr.com/8fb80a2a6111ffbf05defc3a758a2f8a/tumblr_n10n4rpjvZ1st5lhmo1_1280.jpg", "http://31.media.tumblr.com/78ce1831f575f06a6ca966ee2c9198f1/tumblr_n10nb0TY4u1st5lhmo1_1280.jpg", "http://25.media.tumblr.com/d4955c5fb31743bd0740f5001adafb79/tumblr_n10n3wfcrl1st5lhmo1_1280.jpg", "http://25.media.tumblr.com/18e25cdcdaaced3b2b8a467724720ece/tumblr_n10n1wmxiS1st5lhmo1_1280.jpg"];
-
-		$('.card').each(function(i) {
-			var num = Math.floor(Math.random() * 4);
-			$(this).css('background-image', 'url(' + imgList[num] + ')');
-		});
+	
+	function scarborough() {
+		$('#list').slideUp();
+		$('#playlist').show().append('<iframe src="https://embed.spotify.com/?uri=spotify:track:59Jeyi4xmH9nt2tmKPh5Bt" width="300" height="380" frameborder="0" allowtransparency="true"></iframe>');
 	}
-
+	
 	function makelist(that) {
 		kickapi(that);
 		$('#list').slideUp('slow');
@@ -64,6 +71,12 @@
 			type : $this.attr('data-id')
 		}, function(response) {
 			console.log(response);
+			
+			if (response.ids.length == 0) {
+				$('#playlist').show();
+				return;
+			}
+			
 			var list = response.ids.join(',');
 			localStorage["present_playlist"] = list;
 			//このURLをAPIでかえす
@@ -71,6 +84,50 @@
 			$('<iframe />').attr('src', url).attr('frameborder', '0').attr('allowtransparency', 'true').attr('width', '300').attr('height', '380').appendTo('#playlist');
 			$('#playlist').show();
 		});
+	}
+
+	function getTime() {
+		var date = new Date(), h = date.getHours();
+		var nn = ["10", "11", "12", "12", "13", "14"];
+		return nn[Math.ceil(h / 4) - 1];
+	};
+
+	function getWeather() {
+		
+		//うまくいかない
+		return;
+		
+		escapeTag = function(string) {
+			if (string == null)
+				return string;
+			return string.replace(/[&<>"']/g, function(match) {
+				return {
+				'&' : '&amp;',
+				'<' : '&lt;',
+				'>' : '&gt;',
+				'"' : '&quot;',
+				"'" : '#&39;'
+				}[match];
+			});
+		};
+
+		var city = '130010';
+		// Tokyo
+		var wetherURL = 'http://weather.livedoor.com/forecast/webservice/json/v1?city=' + city;
+		var xhr = new XMLHttpRequest();
+		xhr.open("GET", wetherURL, true);
+		//xhr.open("GET", 'http://pipes.yahoo.com/pipes/pipe.run?u=' + encodeURI(wetherURL) + '&_id=332d9216d8910ba39e6c2577fd321a6a&_render=json&_callback=?', true);
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4) {
+				console.log(xhr.responseText);
+				var item = JSON.parse(xhr.responseText);
+				console.log(item);
+				item = item.value.items[0];
+				console.log(item);
+				$('<div><b>' + escapeTag(item.location.city) + escapeTag(item.forecasts[0].dateLabel) + '</b><img src=' + escapeTag(item.forecasts[0].image.url) + '>' + ' <small>' + escapeTag(item.forecasts[0].telop) + '</small><small>copyright livedoor 天気情報</small>' + '</div>').appendTo('#main');
+			}
+		};
+		xhr.send();
 	}
 
 })(jQuery);

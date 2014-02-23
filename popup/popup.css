@@ -2,19 +2,20 @@ body {
 	width: 300px;
 }
 body:before {
-    content: "";
-    position: absolute;
-	background-image :url("http://25.media.tumblr.com/665f306a0a5a5eae6e0c91f33ce74695/tumblr_mzzqv2P7MY1st5lhmo1_1280.jpg");
-    height: 100%; width: 100%; /* Using Glen Maddern's trick /via @mente */
-    transform: scale(5);
-    transform-origin: top left;
-    -webkit-filter: blur(30px);
+	content: "";
+	position: absolute;
+	background-image: url("http://25.media.tumblr.com/665f306a0a5a5eae6e0c91f33ce74695/tumblr_mzzqv2P7MY1st5lhmo1_1280.jpg");
+	height: 100%;
+	width: 100%; /* Using Glen Maddern's trick /via @mente */
+	transform: scale(5);
+	transform-origin: top left;
+	-webkit-filter: blur(30px);
 }
 
 .card {
-	font-size : 18px;
-	color : #fff;
-	font-weight :bold;
+	font-size: 18px;
+	color: #fff;
+	font-weight: bold;
 	/*margin: 10px;*/
 	padding: 20px 10px;
 	/*height: 80px;*/
@@ -23,15 +24,29 @@ body:before {
 	background-color: #fff;
 	/*background-repeat: no-repeat;*/
 	background-attachment: fixed;
-	background-position : center center;
+	background-position: center center;
+	text-shadow: 2px 2px 3px #666;
 }
 
-.card:hover {
-	cursor:pointer;
+#scarb {
+	font-size: 18px;
+	color: #fff;
+	font-weight: bold;
+	/*margin: 10px;*/
+	padding: 20px 10px;
+	/*height: 80px;*/
+	width: 100%;
+	border-bottom: 1px solid #aaa;
+	text-shadow: 2px 2px 3px #666;	
+}
+
+.card:hover, #scarb:hover {
+	cursor: pointer;
 }
 
 .black {
 	color: #333;
+	text-shadow: 2px 2px 3px #ccc;
 }
 
 #playlist {
@@ -39,5 +54,5 @@ body:before {
 }
 
 .col-md-12 {
-	padding : 0;
+	padding: 0;
 }
