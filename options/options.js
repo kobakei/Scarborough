@@ -20,6 +20,13 @@
 			$("#mood3").append('<option value="' + g['ID'] + '">'+ g['VALUE'] +'</option>');
 		}
 
+		for (var i=0; i<ERA_LIST.length; i++) {
+			var g = ERA_LIST[i];
+			$("#era1").append('<option value="' + g['ID'] + '">'+ g['VALUE'] +'</option>');
+			$("#era2").append('<option value="' + g['ID'] + '">'+ g['VALUE'] +'</option>');
+			$("#era3").append('<option value="' + g['ID'] + '">'+ g['VALUE'] +'</option>');
+		}
+
 		$("#save").click(function(e){
 			save_options();
 		});
@@ -30,7 +37,8 @@
 		console.log("save options...");
 		var ids = [
 			"genre1", "genre2", "genre3",
-			"mood1", "mood2", "mood3"
+			"mood1", "mood2", "mood3",
+			"era1", "era2", "era3"
 		];
 		for (var i=0; i<ids.length; i++) {
 			var select1 = document.getElementById(ids[i]);
@@ -46,7 +54,8 @@
 		console.log("restore options...");
 		var ids = [
 			"genre1", "genre2", "genre3",
-			"mood1", "mood2", "mood3"
+			"mood1", "mood2", "mood3",
+			"era1", "era2", "era3"
 		];
 		for (var j=0; j<ids.length; j++) {
 			var select1 = document.getElementById(ids[j]);
