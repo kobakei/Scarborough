@@ -187,7 +187,7 @@ function showNotification(title, body) {
     'icon128.png', //'48.png',  // icon url - can be relative
     title,  // notification title
     body  // notification body text
-  );
+    );
   notification.show();
 
   // 1minで自動で消す
@@ -271,10 +271,19 @@ function saveParamsByTitle(title, url) {
 
   // 新しい設定になったら、通知を出す
   if (prevMood != localStorage["mood"] ||
-    prevGenre !=localStorage["jenre"] ||
+    prevGenre != localStorage["jenre"] ||
     prevEra != localStorage["ere"]) {
-    showNotification('Scarborough',
-      '今のあなたには ' + getMoodName(localStorage["mood"]) + " " + getGenreName(localStorage["jenre"]) + " がおすすめ♪");
+
+    moodName = getMoodName(localStorage["mood"]);
+    jenreName = getGenreName(localStorage["jenre"]);
+
+    if (moodName != "" && jenreName != "") {
+      showNotification('Scarborough', '今のあなたには ' + moodName + " な " + jenreName + " がおすすめ♪");
+    } else if (moodName != "") {
+      showNotification('Scarborough', '今のあなたには ' + moodName + " な曲がおすすめ♪");
+    } else if (jenreName != "") {
+      showNotification('Scarborough', '今のあなたには ' + jenreName + " がおすすめ♪");
+    }
   }
 }
 
@@ -317,7 +326,7 @@ chrome.runtime.onMessage.addListener(
     }
     return true;
   }
-);
+  );
 
 chrome.tabs.onUpdated.addListener(function(tab_id, actInfo, tab) {
   console.log("tab update");
