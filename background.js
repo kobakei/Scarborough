@@ -10,16 +10,38 @@ var FIELD_ENDPOINT = "https://c3868672.web.cddbp.net/webapi/json/1.0/radio/field
 var RETURN_COUNT = 25;
 var RYTHM_ENDPOINT = "https://c3868672.web.cddbp.net/webapi/json/1.0/radio/create?client=" + CLIENT_ID + "&return_count=" + RETURN_COUNT;
 var WEB_ENDPOINT = "https://c3868672.web.cddbp.net/webapi/json/1.0/album_search?mode=single_best&client=" + CLIENT_ID + "&return_count=" + RETURN_COUNT;
+var getDomainExpr = /^[httpsfile]+:\/{2,3}([0-9a-zA-Z\.\-:]+?):?[0-9]*?\//i;
 var associative_rule = [];
+var rule_group = [];
 
-associative_rule[0] = []
+associative_rule[0] = [];
 associative_rule[0].expr = /.*[sS]potify.*/;
 associative_rule[0].jenre = "25964";
 associative_rule[0].jenre_description = "Rock";
 associative_rule[0].mood = "65332";
 associative_rule[0].mood_description = "Lively";
 associative_rule[0].ere = "";
+associative_rule[1] = [];
+associative_rule[1].expr = /.*github\.com.*/;
+associative_rule[1].situation = "bussiness";
+associative_rule[2] = [];
+associative_rule[2].expr = /.*www\.2ch\.net.*/;
+associative_rule[2].situation = "play";
 
+rule_group[0] = [];
+rule_group[0].jenre = "36054";
+rule_group[0].jenre_description = "Dance & House";
+rule_group[0].mood = "65333";
+rule_group[0].mood_description = "Upbeat";
+rule_group[0].ere = "";
+rule_group[0].situation = "business";
+rule_group[1] = [];
+rule_group[1].jenre = "36056";
+rule_group[1].jenre_description = "Pop";
+rule_group[1].mood = "42945";
+rule_group[1].mood_description = "Empowering";
+rule_group[1].ere = "";
+rule_group[1].situation = "play";
 
 // UserIDをストレージに保存する
 function saveGracenoteUserId(user_id) {
@@ -183,21 +205,47 @@ function showNotification(title, body) {
   });
 }
 
+// シチュエーションからムード等を設定する
+function convertParams(situation) {
+  if (situation == "business") {
+    localStorage["mood"] = rule_group[0].mood;
+    localStorage["jenre"] = rule_group[0].jenre;
+    localStorage["ere"] = rule_group[0].ere;
+
+  } else if (situation == "play") {
+    localStorage["mood"] = rule_group[1].mood;
+    localStorage["jenre"] = rule_group[1].jenre;
+    localStorage["ere"] = rule_group[1].ere;
+  }
+}
+
 // タイトルからムード等を設定する
-function saveParamsByTitle(title) {
+function saveParamsByTitle(tab) {
+  domain = tab.url.match(getDomainExpr);
+  console.log(domain);
   for (i = 0; i < associative_rule.length; i=i+1) {
     expr = associative_rule[i].expr;
-    if (expr.test(title)) {
-      localStorage["mood"] = associative_rule[i].mood;
-      localStorage["jenre"] = associative_rule[i].jenre;
-      localStorage["ere"] = associative_rule[i].ere;
+    if (expr.test(domain)) {
+      if (associative_rule[i].situation) {
+        convertParams(associative_rule[i].situation);
+        
+      } else if (associative_rule[i].mood) {
+        // シチュエーションが無く、直接パラメータが設定されている場合
+        localStorage["mood"] = associative_rule[i].mood;
+        localStorage["jenre"] = associative_rule[i].jenre;
+        localStorage["ere"] = associative_rule[i].ere;
 
-      console.log("mood: " + associative_rule[i].mood_description);
-      console.log("jenre: " + associative_rule[i].jenre_description);
-      console.log("ere: " + associative_rule[i].ere);
+        console.log("mood: " + associative_rule[i].mood_description);
+        console.log("jenre: " + associative_rule[i].jenre_description);
+        console.log("ere: " + associative_rule[i].ere);
+      } else {
+        continue;
+      }
+      break;
     }
   }
-  localStorage["tab_title"] = title;
+  localStorage["tab_title"] = tab.title;
+  localStorage["tab_url"] = tab.url;
 }
 
 
@@ -246,16 +294,13 @@ chrome.tabs.onUpdated.addListener(function(tab_id, actInfo, tab) {
     return;
   }
   if (tab) {
-    saveParamsByTitle(tab.title);
-    localStorage["tab_title"] = tab.title;
-    
+    saveParamsByTitle(tab);
   }
 });
 
 chrome.tabs.onActivated.addListener(function(actInfo) {
   chrome.tabs.get(actInfo.tabId, function(tab) {
-    saveParamsByTitle(tab.title);
-    localStorage["tab_title"] = tab.title;
+    saveParamsByTitle(tab);
   });
 });
 
