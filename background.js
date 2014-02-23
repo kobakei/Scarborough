@@ -218,7 +218,7 @@ function saveParamsByTitle(title) {
     prevGenre !=localStorage["jenre"] ||
     prevEra != localStorage["ere"]) {
     showNotification('Scarborough',
-      '今のあなたには' + localStorage["moode"] + " " + localStorage["jenre"] + "がおすすめ♪");
+      '今のあなたには' + localStorage["mood"] + " " + localStorage["jenre"] + "がおすすめ♪");
   }
 }
 
