@@ -237,12 +237,12 @@ function saveParamsByTitle(title, url) {
   //console.log("prev jenre: " + prevGenre);
 
   // ドメイン名でチェック。仕事、遊び、その他に分類
-  if (/.*[gG]ithub.*/.test(url)) {
+  if (/.*[gG]ithub.*/.test(url) || /.*developer.*/.test(url)) {
     // 仕事
     localStorage["mood"]　= localStorage["mood1"];
     localStorage["jenre"]　= localStorage["genre1"];
     localStorage["ere"]　= localStorage["era1"];
-  } else if (/.*[lL]ivedoor.*/.test(url)) {
+  } else if (/.*[lL]ivedoor.*/.test(url) || /.*blog.*/.test(url) || /.*ameblo.*/.test(url)) {
     // 遊び
     localStorage["mood"]　= localStorage["mood2"];
     localStorage["jenre"]　= localStorage["genre2"];
