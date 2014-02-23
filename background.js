@@ -246,9 +246,9 @@ function convertParams(situation) {
     localStorage["ere"]　= localStorage["era1"];
   } else if (situation == "play") {
     // 遊び
-    localStorage["mood"]　= localStorage["mood2"];
-    localStorage["jenre"]　= localStorage["genre2"];
-    localStorage["ere"]　= localStorage["era2"];
+    localStorage["mood"] = localStorage["mood2"];
+    localStorage["jenre"] = localStorage["genre2"];
+    localStorage["ere"] = localStorage["era2"];
   } else {
     // その他
     localStorage["mood"]　= localStorage["mood3"];
