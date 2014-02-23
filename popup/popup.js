@@ -13,6 +13,11 @@
 		$(document).on('click', '#back', function(e) {
 			back();
 		});
+		
+		$(document).on('click', '#scarb', function(e) {
+			scarborough();
+		});
+
 	}
 
 	function isPlaylist() {
@@ -31,6 +36,7 @@
 
 		getWeather();
 		title.push('20');
+		title.push('30');
 
 		for (var i = 0; i <= title.length; i++) {
 			if (!title[i]) break; //おまじない
@@ -41,19 +47,13 @@
 			}
 			$('#list li:last').css('background-image', 'url(' + CARD_LIST[title[i]].img + ')');
 		}
-		//setcardimg();
 	}
-
-	function setcardimg() {
-
-		var imgList = ["http://25.media.tumblr.com/8fb80a2a6111ffbf05defc3a758a2f8a/tumblr_n10n4rpjvZ1st5lhmo1_1280.jpg", "http://31.media.tumblr.com/78ce1831f575f06a6ca966ee2c9198f1/tumblr_n10nb0TY4u1st5lhmo1_1280.jpg", "http://25.media.tumblr.com/d4955c5fb31743bd0740f5001adafb79/tumblr_n10n3wfcrl1st5lhmo1_1280.jpg", "http://25.media.tumblr.com/18e25cdcdaaced3b2b8a467724720ece/tumblr_n10n1wmxiS1st5lhmo1_1280.jpg"];
-
-		$('.card').each(function(i) {
-			var num = Math.floor(Math.random() * 4);
-			$(this).css('background-image', 'url(' + imgList[num] + ')');
-		});
+	
+	function scarborough() {
+		$('#list').slideUp();
+		$('#playlist').show().append('<iframe src="https://embed.spotify.com/?uri=spotify:track:59Jeyi4xmH9nt2tmKPh5Bt" width="300" height="380" frameborder="0" allowtransparency="true"></iframe>');
 	}
-
+	
 	function makelist(that) {
 		kickapi(that);
 		$('#list').slideUp('slow');

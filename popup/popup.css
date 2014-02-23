@@ -28,7 +28,19 @@ body:before {
 	text-shadow: 2px 2px 3px #666;
 }
 
-.card:hover {
+#scarb {
+	font-size: 18px;
+	color: #fff;
+	font-weight: bold;
+	/*margin: 10px;*/
+	padding: 20px 10px;
+	/*height: 80px;*/
+	width: 100%;
+	border-bottom: 1px solid #aaa;
+	text-shadow: 2px 2px 3px #666;	
+}
+
+.card:hover, #scarb:hover {
 	cursor: pointer;
 }
 
