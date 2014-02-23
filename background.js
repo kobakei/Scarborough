@@ -12,7 +12,7 @@ var RYTHM_ENDPOINT = "https://c3868672.web.cddbp.net/webapi/json/1.0/radio/creat
 var WEB_ENDPOINT = "https://c3868672.web.cddbp.net/webapi/json/1.0/album_search?mode=single_best&client=" + CLIENT_ID + "&return_count=" + RETURN_COUNT;
 var associative_rule = [];
 
-associative_rule[0] = []
+associative_rule[0] = [];
 associative_rule[0].expr = /.*[sS]potify.*/;
 associative_rule[0].jenre = "25964";
 associative_rule[0].jenre_description = "Rock";
@@ -239,19 +239,19 @@ function saveParamsByTitle(title, url) {
   // ドメイン名でチェック。仕事、遊び、その他に分類
   if (/.*[gG]ithub.*/.test(url) || /.*developer.*/.test(url)) {
     // 仕事
-    localStorage["mood"]　= localStorage["mood1"];
-    localStorage["jenre"]　= localStorage["genre1"];
-    localStorage["ere"]　= localStorage["era1"];
+    localStorage["mood"] = localStorage["mood1"];
+    localStorage["jenre"] = localStorage["genre1"];
+    localStorage["ere"] = localStorage["era1"];
   } else if (/.*[lL]ivedoor.*/.test(url) || /.*blog.*/.test(url) || /.*ameblo.*/.test(url)) {
     // 遊び
-    localStorage["mood"]　= localStorage["mood2"];
-    localStorage["jenre"]　= localStorage["genre2"];
-    localStorage["ere"]　= localStorage["era2"];
+    localStorage["mood"] = localStorage["mood2"];
+    localStorage["jenre"] = localStorage["genre2"];
+    localStorage["ere"] = localStorage["era2"];
   } else {
     // その他
-    localStorage["mood"]　= localStorage["mood3"];
-    localStorage["jenre"]　= localStorage["genre3"];
-    localStorage["ere"]　= localStorage["era3"];
+    localStorage["mood"] = localStorage["mood3"];
+    localStorage["jenre"] = localStorage["genre3"];
+    localStorage["ere"] = localStorage["era3"];
 
     // タイトルでチェック
     for (i = 0; i < associative_rule.length; i=i+1) {

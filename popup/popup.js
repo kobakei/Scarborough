@@ -66,13 +66,19 @@
 
 	function kickapi(that) {
 		var $this = $(that);
+		
+		//TOKYO
+		if ($this.attr('data-id') == 30) {
+			$('#playlist').append('<div class="errorspotify">Sorry. Spotify is not service in JAPAN.</div>').show();
+		}
+
 		// 第一引数に選択されたモード、第二引数がコールバック
 		chrome.runtime.sendMessage({
 			type : $this.attr('data-id')
 		}, function(response) {
 			console.log(response);
-			
-			if (response.ids.length == 0) {
+			console.log(response.ids);
+			if (!response.ids) {
 				$('#playlist').show();
 				return;
 			}
