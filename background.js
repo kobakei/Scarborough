@@ -89,15 +89,18 @@ function getTrackListByRythm(genre, mood, era, callback) {
       console.log(obj);
       // いい感じに整形
       var resp = [];
-      for (var i=0; i<obj['RESPONSE'][0]['ALBUM'].length; i++) {
-        var album = obj['RESPONSE'][0]['ALBUM'][i];
-        resp.push({
-          artist: album['ARTIST'][0]['VALUE'],
-          album: album['TITLE'][0]['VALUE'],
-          track: album['TRACK'][0]['TITLE'][0]['VALUE']
-        });
+      if (obj['RESPONSE'][0]['ALBUM']) {
+        for (var i=0; i<obj['RESPONSE'][0]['ALBUM'].length; i++) {
+          var album = obj['RESPONSE'][0]['ALBUM'][i];
+          resp.push({
+            artist: album['ARTIST'][0]['VALUE'],
+            album: album['TITLE'][0]['VALUE'],
+            track: album['TRACK'][0]['TITLE'][0]['VALUE']
+          });
+        }
+      } else {
+        callback(resp);
       }
-      callback(resp);
     }
   }
   xhr.send();
