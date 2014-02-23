@@ -241,9 +241,9 @@ function getMoodName(id) {
 function convertParams(situation) {
   if (situation == "business") {
     // 仕事
-    localStorage["mood"]　= localStorage["mood1"];
-    localStorage["jenre"]　= localStorage["genre1"];
-    localStorage["ere"]　= localStorage["era1"];
+    localStorage["mood"] = localStorage["mood1"];
+    localStorage["jenre"] = localStorage["genre1"];
+    localStorage["ere"] = localStorage["era1"];
   } else if (situation == "play") {
     // 遊び
     localStorage["mood"] = localStorage["mood2"];
@@ -251,9 +251,9 @@ function convertParams(situation) {
     localStorage["ere"] = localStorage["era2"];
   } else {
     // その他
-    localStorage["mood"]　= localStorage["mood3"];
-    localStorage["jenre"]　= localStorage["genre3"];
-    localStorage["ere"]　= localStorage["era3"];
+    localStorage["mood"] = localStorage["mood3"];
+    localStorage["jenre"] = localStorage["genre3"];
+    localStorage["ere"] = localStorage["era3"];
   }
 }
 
