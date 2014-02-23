@@ -262,14 +262,19 @@ function saveParamsByTitle(title, url) {
   var prevMood = localStorage["mood"];
   var prevGenre = localStorage["jenre"];
   var prevEra = localStorage["ere"];
-  var domain = url.match(getDomainExpr)[1];
+  var domain = "";
+  if (url.match(getDomainExpr) && url.match(getDomainExpr).length > 0) {
+    domain = url.match(getDomainExpr)[1];
+  } else {
+    console.log("Does not match");
+  }
 
   for (i = 0; i < associative_rule.length; i=i+1) {
     expr = associative_rule[i].expr;
     if (expr.test(domain)) {
       if (associative_rule[i].situation) {
         convertParams(associative_rule[i].situation);
-        
+
       } else if (associative_rule[i].mood) {
         // シチュエーションが無く、直接パラメータが設定されている場合
         localStorage["mood"] = associative_rule[i].mood;
@@ -360,8 +365,14 @@ chrome.tabs.onUpdated.addListener(function(tab_id, actInfo, tab) {
 
 chrome.tabs.onActivated.addListener(function(actInfo) {
   console.log("*** tab activated ***");
+  if (actInfo.status == "loading") {
+    return;
+  }
+  console.log(chrome.tabs);
   chrome.tabs.get(actInfo.tabId, function(tab) {
-    saveParamsByTitle(tab.title, tab.url);
+    if (tab) {
+      saveParamsByTitle(tab.title, tab.url);
+    }
   });
 });
 
