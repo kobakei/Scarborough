@@ -23,7 +23,7 @@ associative_rule[0].mood_description = "Lively";
 associative_rule[0].ere = "";
 associative_rule[1] = [];
 associative_rule[1].expr = /.*github\.com.*/;
-associative_rule[1].situation = "bussiness";
+associative_rule[1].situation = "business";
 associative_rule[2] = [];
 associative_rule[2].expr = /.*www\.2ch\.net.*/;
 associative_rule[2].situation = "play";
@@ -262,8 +262,7 @@ function saveParamsByTitle(title, url) {
   var prevMood = localStorage["mood"];
   var prevGenre = localStorage["jenre"];
   var prevEra = localStorage["ere"];
-  var domain = url.match(getDomainExpr);
-  console.log(domain);
+  var domain = url.match(getDomainExpr)[1];
 
   for (i = 0; i < associative_rule.length; i=i+1) {
     expr = associative_rule[i].expr;
@@ -360,7 +359,7 @@ chrome.tabs.onUpdated.addListener(function(tab_id, actInfo, tab) {
 });
 
 chrome.tabs.onActivated.addListener(function(actInfo) {
-  console.log(actInfo.tabId);
+  console.log("*** tab activated ***");
   chrome.tabs.get(actInfo.tabId, function(tab) {
     saveParamsByTitle(tab.title, tab.url);
   });
