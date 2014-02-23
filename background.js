@@ -44,7 +44,7 @@ function getUserId() {
       saveGracenoteUserId(userId);
 
       //test
-      getFieldList();
+      //getFieldList();
     }
   }
   xhr.send();
@@ -69,14 +69,15 @@ function getFieldList() {
 
 // ジャンル・ムード・時代でトラックリストを取得します
 function getTrackListByRythm(genre, mood, era, callback) {
+  console.log("getTrackListByRythm");
   var url = RYTHM_ENDPOINT + "&user=" + userId;
-  if (genre) {
+  if (genre && genre.length > 0) {
     url = url + "&genre=" + genre;
   }
-  if (mood) {
+  if (mood && mood.length > 0) {
     url = url + "&mood=" + mood;
   }
-  if (era) {
+  if (era && era.length > 0) {
     url = url + "&era=" + era;
   }
   var xhr = new XMLHttpRequest();
@@ -98,12 +99,12 @@ function getTrackListByRythm(genre, mood, era, callback) {
             track: album['TRACK'][0]['TITLE'][0]['VALUE']
           });
         }
-      } else {
-        callback(resp);
       }
+      callback(resp);
     }
   }
   xhr.send();
+  return true;
 }
 
 // アーティスト名・アルバム名で取得
@@ -139,6 +140,8 @@ function getTrackListByWeb(artist, album) {
 // ユーザーが選択したタイプから、ジャンルとムードに変換する
 function getGenreAndMoodFromType(cardId) {
   obj = CARD_LIST[cardId];
+
+  // Card ID = 5のときは、ローカルストレージに保存した設定（タブから決まったもの）を使う
   if (cardId == 5) {
     if (localStorage["mood"]) {
       obj.mood = localStorage["mood"];
@@ -151,6 +154,7 @@ function getGenreAndMoodFromType(cardId) {
 
 // 必要な数だけSpotify Track IDの配列を取得します
 function getSpotifyTrackIdList(data, callback) {
+  console.log("getSpotifyTrackIdList");
   var count = RETURN_COUNT;
   var trackIdList = [];
   for (var i=0; i<data.length; i++) {
@@ -169,11 +173,17 @@ function getSpotifyTrackIdList(data, callback) {
       }
     });
   }
+  return true;
 }
+
+var notification = null;
 
 // 通知を表示する
 function showNotification(title, body) {
-  var notification = webkitNotifications.createNotification(
+  if (notification) {
+    notification.cancel();
+  }
+  notification = webkitNotifications.createNotification(
     'icon128.png', //'48.png',  // icon url - can be relative
     title,  // notification title
     body  // notification body text
@@ -183,15 +193,42 @@ function showNotification(title, body) {
   // 1minで自動で消す
   chrome.alarms.onAlarm.addListener(function(alarm){
     console.log("Alarm:" + alarm.name);
-    notification.cancel();
+    if (notification) {
+      notification.cancel();
+      notification = null;
+    }
   });
   chrome.alarms.create("delete_notification", {
     delayInMinutes: 0.15
   });
 }
 
+function getGenreName(id) {
+  if (id == "") {
+    return "";
+  }
+  for (var i=0; i<GENRE_LIST.length; i++) {
+    if (GENRE_LIST[i]['ID'] == id) {
+      return GENRE_LIST[i]['VALUE'];
+    }
+  }
+  return "";
+}
+
+function getMoodName(id) {
+  if (id == "") {
+    return "";
+  }
+  for (var i=0; i<MOOD_LIST.length; i++) {
+    if (MOOD_LIST[i]['ID'] == id) {
+      return MOOD_LIST[i]['VALUE'];
+    }
+  }
+  return "";
+}
+
 // タイトルからムード等を設定する
-function saveParamsByTitle(title) {
+function saveParamsByTitle(title, url) {
   //console.log("save params by title");
   var prevMood = localStorage["mood"];
   var prevGenre = localStorage["jenre"];
@@ -199,17 +236,36 @@ function saveParamsByTitle(title) {
   //console.log("prev mood: " + prevMood);
   //console.log("prev jenre: " + prevGenre);
 
-  for (i = 0; i < associative_rule.length; i=i+1) {
-    expr = associative_rule[i].expr;
-    if (expr.test(title)) {
-      localStorage["mood"] = associative_rule[i].mood;
-      localStorage["jenre"] = associative_rule[i].jenre;
-      localStorage["ere"] = associative_rule[i].ere;
+  // ドメイン名でチェック。仕事、遊び、その他に分類
+  if (/.*[gG]ithub.*/.test(url)) {
+    // 仕事
+    localStorage["mood"]　= localStorage["mood1"];
+    localStorage["jenre"]　= localStorage["genre1"];
+    localStorage["ere"]　= localStorage["era1"];
+  } else if (/.*[lL]ivedoor.*/.test(url)) {
+    // 遊び
+    localStorage["mood"]　= localStorage["mood2"];
+    localStorage["jenre"]　= localStorage["genre2"];
+    localStorage["ere"]　= localStorage["era2"];
+  } else {
+    // その他
+    localStorage["mood"]　= localStorage["mood3"];
+    localStorage["jenre"]　= localStorage["genre3"];
+    localStorage["ere"]　= localStorage["era3"];
 
-      console.log("mood: " + associative_rule[i].mood_description);
-      console.log("jenre: " + associative_rule[i].jenre_description);
-      console.log("ere: " + associative_rule[i].ere);
-      break;
+    // タイトルでチェック
+    for (i = 0; i < associative_rule.length; i=i+1) {
+      expr = associative_rule[i].expr;
+      if (expr.test(title)) {
+        localStorage["mood"] = associative_rule[i].mood;
+        localStorage["jenre"] = associative_rule[i].jenre;
+        localStorage["ere"] = associative_rule[i].ere;
+
+        console.log("mood: " + associative_rule[i].mood_description);
+        console.log("jenre: " + associative_rule[i].jenre_description);
+        console.log("ere: " + associative_rule[i].ere);
+        break;
+      }
     }
   }
 
@@ -218,7 +274,7 @@ function saveParamsByTitle(title) {
     prevGenre !=localStorage["jenre"] ||
     prevEra != localStorage["ere"]) {
     showNotification('Scarborough',
-      '今のあなたには' + localStorage["mood"] + " " + localStorage["jenre"] + "がおすすめ♪");
+      '今のあなたには ' + getMoodName(localStorage["mood"]) + " " + getGenreName(localStorage["jenre"]) + " がおすすめ♪");
   }
 }
 
@@ -238,6 +294,7 @@ chrome.runtime.onMessage.addListener(
       var obj = getGenreAndMoodFromType(request.type);
       if (obj) {
         getTrackListByRythm(obj.genre, obj.mood, null, function(data){
+          console.log("Success to get track list by GN");
           console.log(data);
           // Spotify IDに変換
           getSpotifyTrackIdList(data, function(trackIds){
@@ -263,20 +320,43 @@ chrome.runtime.onMessage.addListener(
 );
 
 chrome.tabs.onUpdated.addListener(function(tab_id, actInfo, tab) {
+  console.log("tab update");
   // 取得不要時
   if (actInfo.status == "loading") {
     return;
   }
   if (tab) {
-    saveParamsByTitle(tab.title);
+    saveParamsByTitle(tab.title, tab.url);
     localStorage["tab_title"] = tab.title;
-
+    localStorage["tab_url"] = tab.url;
   }
 });
 
 chrome.tabs.onActivated.addListener(function(actInfo) {
+  console.log("tab activate");
   chrome.tabs.get(actInfo.tabId, function(tab) {
-    saveParamsByTitle(tab.title);
+    saveParamsByTitle(tab.title, tab.url);
     localStorage["tab_title"] = tab.title;
+    localStorage["tab_url"] = tab.url;
   });
 });
+
+// 初期設定
+// Business
+if (!localStorage["mood1"]) {
+  localStorage["mood1"] = "42955";
+  localStorage["genre1"] = "36055";
+  localStorage["era1"] = "";
+}
+// Relax
+if (!localStorage["mood2"]) {
+  localStorage["mood2"] = "";
+  localStorage["genre2"] = "36063";
+  localStorage["era2"] = "";
+}
+// Other
+if (!localStorage["mood3"]) {
+  localStorage["mood3"] = "";
+  localStorage["genre3"] = "36056";
+  localStorage["era3"] = "";
+}
