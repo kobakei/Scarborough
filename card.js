@@ -258,7 +258,7 @@ CARD_LIST = {
 	},
 	5 : {
 		id : "5",
-		message : "ID5",
+		message : "タイトルによって判定",
 		genre : "36056",
 		mood : "65326",
 		img : "http://25.media.tumblr.com/7b53f50fd7f50ca8bdd69a68352a036d/tumblr_mqq48zRR9x1st5lhmo1_1280.jpg"
@@ -277,24 +277,24 @@ CARD_LIST = {
 		id : "11",
 		message : "Good Morning!",
 		addclass : "black",
-		genre : "65322",
-		mood : "36059",
+		genre : "36059",
+		mood : "65322",
 		img : "http://24.media.tumblr.com/56fea5f4c81a60e418a83e114ac07414/tumblr_myp99avE2U1st5lhmo1_1280.jpg"
 	},
 	12 : {
 		id : "12",
 		message : "Hello!",
 		addclass : "black",
-		genre : "42961",
-		mood : "36054",
+		genre : "36059",
+		mood : "65322",
 		img : "http://24.media.tumblr.com/56fea5f4c81a60e418a83e114ac07414/tumblr_myp99avE2U1st5lhmo1_1280.jpg"
 	},
 	13 : {
 		id : "13",
 		message : "Good evening.",
 		addclass : "black",
-		genre : "65322",
-		mood : "36059",
+		genre : "36059",
+		mood : "65322",
 		img : "http://24.media.tumblr.com/56fea5f4c81a60e418a83e114ac07414/tumblr_myp99avE2U1st5lhmo1_1280.jpg"
 	},
 	14 : {
@@ -304,4 +304,26 @@ CARD_LIST = {
 		mood : "42948",
 		img : "http://25.media.tumblr.com/8fb80a2a6111ffbf05defc3a758a2f8a/tumblr_n10n4rpjvZ1st5lhmo1_1280.jpg"
 	},
+	
+	
+	//weather
+	
+	20 : {
+		id : "20",
+		message : "It's Sunny Day!",
+		genre : "36056",
+		mood : "42961",
+		img : "http://www.wallsave.com/wallpapers/2560x1920/sunny-snsd/1289872/sunny-snsd-it-was-and-in-the-middle-of-winter-1289872.jpg"
+	},
+	
+	//geo
+	30 : {
+		id : "30",
+		message : "東京で流行ってる曲！",
+		genre : "99999",
+		mood : "99999",
+		img : "http://blog-imgs-52.fc2.com/s/h/a/sharecoro/8135637414_9b6851d8d8_b.jpeg"
+	},
+
+
 };

@@ -25,10 +25,15 @@
 	}
 
 	function getcardlist() {
-		var title = ['5', '1', '2', '3', '4']; //DEF list
+		var title = ['5', '1', '2', '3', '4'];
+		//DEF list
 		title.unshift(getTime());
-		
+
+		getWeather();
+		title.push('20');
+
 		for (var i = 0; i <= title.length; i++) {
+			if (!title[i]) break; //おまじない
 			if (title[i] == 5) {
 				$('#list').append('<li data-id="' + 5 + '" class="card">' + localStorage["tab_title"] + 'をみているあなたへのおすすめ</li>');
 			} else {
@@ -66,6 +71,12 @@
 			type : $this.attr('data-id')
 		}, function(response) {
 			console.log(response);
+			
+			if (response.ids.length == 0) {
+				$('#playlist').show();
+				return;
+			}
+			
 			var list = response.ids.join(',');
 			localStorage["present_playlist"] = list;
 			//このURLをAPIでかえす
@@ -80,5 +91,43 @@
 		var nn = ["10", "11", "12", "12", "13", "14"];
 		return nn[Math.ceil(h / 4) - 1];
 	};
+
+	function getWeather() {
+		
+		//うまくいかない
+		return;
+		
+		escapeTag = function(string) {
+			if (string == null)
+				return string;
+			return string.replace(/[&<>"']/g, function(match) {
+				return {
+				'&' : '&amp;',
+				'<' : '&lt;',
+				'>' : '&gt;',
+				'"' : '&quot;',
+				"'" : '#&39;'
+				}[match];
+			});
+		};
+
+		var city = '130010';
+		// Tokyo
+		var wetherURL = 'http://weather.livedoor.com/forecast/webservice/json/v1?city=' + city;
+		var xhr = new XMLHttpRequest();
+		xhr.open("GET", wetherURL, true);
+		//xhr.open("GET", 'http://pipes.yahoo.com/pipes/pipe.run?u=' + encodeURI(wetherURL) + '&_id=332d9216d8910ba39e6c2577fd321a6a&_render=json&_callback=?', true);
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4) {
+				console.log(xhr.responseText);
+				var item = JSON.parse(xhr.responseText);
+				console.log(item);
+				item = item.value.items[0];
+				console.log(item);
+				$('<div><b>' + escapeTag(item.location.city) + escapeTag(item.forecasts[0].dateLabel) + '</b><img src=' + escapeTag(item.forecasts[0].image.url) + '>' + ' <small>' + escapeTag(item.forecasts[0].telop) + '</small><small>copyright livedoor 天気情報</small>' + '</div>').appendTo('#main');
+			}
+		};
+		xhr.send();
+	}
 
 })(jQuery);
