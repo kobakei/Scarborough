@@ -316,7 +316,7 @@ CARD_LIST = {
 	},
 	12 : {
 		id : "12",
-		message : "Hello!",
+		message : "こんにちは!<br>昼下がりいかがおすごしですか？",
 		addclass : "black",
 		genre : "36059",
 		mood : "65322",
